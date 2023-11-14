@@ -4,7 +4,7 @@ from matplotlib import ticker
 import matplotlib.dates as mdates
 import config as cfg
 import grid_maker as gm
-#test
+
 sed = cfg.sed
 sed2 = cfg.sed2
 t1 = cfg.t1_berre_1yr
