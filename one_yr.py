@@ -9,6 +9,7 @@ sed = cfg.sed
 sed2 = cfg.sed2
 t1 = cfg.t1_1yr
 t2 = cfg.t2_1yr
+bbl_h= cfg.bbl_h
 
 
 def plot_param(ds, name, x, y, y_sed, axis,axis_cb,axis_sed,axis_cb_sed):
@@ -49,8 +50,7 @@ def plot_param(ds, name, x, y, y_sed, axis,axis_cb,axis_sed,axis_cb_sed):
     cb_sed.ax.yaxis.set_major_locator(locs)
 
     axis.set_ylim(np.max(y[:sed2]),0)
-    #axis_sed.set_ylim(5,-5)
-    axis_sed.set_ylim(10,-10)
+    axis_sed.set_ylim(bbl_h,-bbl_h)
 
     axis_sed.axhline(0,linestyle = '--',linewidth = 0.5,color = 'w')
 

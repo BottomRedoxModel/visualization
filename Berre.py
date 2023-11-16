@@ -7,8 +7,8 @@ import grid_maker as gm
 
 sed = cfg.sed
 sed2 = cfg.sed2
-t1 = cfg.t1_berre_1yr
-t2 = cfg.t2_berre_1yr
+t1 = cfg.t1_1yr
+t2 = cfg.t2_1yr
 
 
 def plot_param(ds, name, x, y, y_sed, axis,axis_cb,axis_sed,axis_cb_sed):
