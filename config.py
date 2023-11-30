@@ -3,7 +3,7 @@ import colormaps as cmaps
 
 # Test commit
 # SWI
-sed = 17       # SWI
+sed = 30       # SWI
 sed2 = 12      # upper boundary of SWI
 
 # column to select
@@ -34,13 +34,8 @@ tstep = 1  # output steps for animation  (every 3d step, i.e. 3 hours if timeste
 
 # 1 year parameters for ONE selected year or a selected SHORT period
 # 'YYYY-MM-DD'
-t1_1yr = '2020-01-01' #'2012-01-01'
-t2_1yr = '2020-12-31' #'2012-05-01' '2013-01-01' #'2012-04-15' #
-
-# 1 year parameters for ONE selected year or a selected SHORT period
-# 'YYYY-MM-DD'
-t1_berre_1yr = '2015-01-01'
-t2_berre_1yr = '2016-08-29'
+t1_1yr = '2010-08-01T00:00:00'
+t2_1yr = '2010-02-01T00:00:00'
 
 units_dict = {'$°C$': ['T'],
               '$psu$': ['S'],
