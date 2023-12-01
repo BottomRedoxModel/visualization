@@ -7,11 +7,8 @@ import grid_maker as gm
 
 sed = cfg.sed
 sed2 = cfg.sed2
-t1 = cfg.t1_ztime
-t2 = cfg.t2_ztime
-bbl_h = cfg.bbl_h
-
-yspace = cfg.yspace
+t1 = cfg.t1_1yr
+t2 = cfg.t2_1yr
 
 
 def plot_param(ds, name, x, y, y_sed, axis,axis_cb,axis_sed,axis_cb_sed):
@@ -52,22 +49,22 @@ def plot_param(ds, name, x, y, y_sed, axis,axis_cb,axis_sed,axis_cb_sed):
     cb_sed.ax.yaxis.set_major_locator(locs)
 
     axis.set_ylim(np.max(y[:sed2]),0)
-    axis_sed.set_ylim(bbl_h,-bbl_h)
+    #axis_sed.set_ylim(5,-5)
+    axis_sed.set_ylim(10,-10)
 
     axis_sed.axhline(0,linestyle = '--',linewidth = 0.5,color = 'w')
 
     axis.tick_params(axis='y', pad = 0.01)
     axis_sed.tick_params(axis='y', pad = 1)
 
-    years = mdates.YearLocator(yspace)  # every Xth year
-    years_fmt = mdates.DateFormatter('%Y')
+    months = mdates.MonthLocator()  # every month
+    months_fmt = mdates.DateFormatter('%b')
 
-    axis.xaxis.set_major_locator(years)
-    axis.xaxis.set_major_formatter(years_fmt)
-    axis_sed.xaxis.set_major_locator(years)
-    axis_sed.xaxis.set_major_formatter(years_fmt)
+    axis.xaxis.set_major_locator(months)
+    axis.xaxis.set_major_formatter(months_fmt)
+    axis_sed.xaxis.set_major_locator(months)
+    axis_sed.xaxis.set_major_formatter(months_fmt)
 
-    axis.format_xdata = mdates.DateFormatter('%Y-%m-%d')
     axis.set_xticklabels([])
 
     title = '%s, $\mu M$' % name
@@ -93,7 +90,7 @@ def fig_ztime(ds, picname, varnames, icol, nrows, ncols):
 
     fig, (axes, axes_cb, axes_sed, axes_sed_cb) = gm.get_fig_axes(nrows, ncols, nv)
 
-    for i in np.arange(len(varnames)):
+    for i in np.arange(nv):
         print(i,varnames[i])
         if varnames[i] != 'Kz':
             plot_param(ds, varnames[i], xs, ys, y_sed, axes[i], axes_cb[i], axes_sed[i], axes_sed_cb[i])
