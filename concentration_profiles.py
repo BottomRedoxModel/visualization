@@ -8,10 +8,6 @@ import re
 
 plt.rcParams["figure.facecolor"] = 'w'
 
-# 26 August 2015 = 237 days = 5688 heures
-# 20 January 2016 = 384 days = 9216 heures
-# 05 May 2016 = 490 days = 11760 heures
-# 23 August 2016 = 600 = 14400 heures
 iday = 5688
 hor_ax = 'z'  # Horizontal axis. Only z or dens.
 sed = 17
@@ -42,6 +38,7 @@ colors_vax2 = [['#4daf4a', '#ff7f00'],
               ['#e6ab02', '#a65628', '#f781bf']
               ]
 
+# {model: obs}
 variable_mapping = {"NO3": "NO3 uM",
                     "NO2": "NO2 uM",
                     "NH4": "NH4 uM",
