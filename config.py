@@ -11,8 +11,8 @@ icol_C =  0
 t1_ztime = None
 t2_ztime = None
 # time period for ONE selected year or a selected SHORT period [YYYY-MM-DD]
-t1_1yr = '2015-01-01'
-t2_1yr = '2016-08-29'
+t1_1yr = '2020-01-01'
+t2_1yr = '2021-01-01'
 # thickness of BBL and sediments for plotting (in cm)
 bbl_h = 10
 

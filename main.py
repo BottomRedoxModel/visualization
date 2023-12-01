@@ -36,8 +36,7 @@ l = list(ds.keys())
 l = [ x for x in l if "sink:" not in x ]
 l = [ x for x in l if "fick:" not in x ]
 l = [ x for x in l if x not in ["z", "z2", "time", "Ux"] ]
-print(l)
-print(len(l))
+
 all_vars = l
 
 #---------------------------------------------------------------
