@@ -1,6 +1,20 @@
 import my_cmaps as mcm
 import colormaps as cmaps
 
+# variables to plot
+oxy_varnames = ['Oxy', 'Phy', 'Het', 'POM', 'DOM', 'NUT',]
+carb_varnames = ['DIC', 'Alk','CaCO3',  'pH',  'Om_Ar','CaCO3_form', 'pCO2', 'CO3','CaCO3_diss',]
+brom_state_variables = ["Phy", "Het", "POML", "POMR", "DOML", "DOMR",
+                        "O2", "NH4", "NO2", "NO3", "PO4", "Si",
+                        "Baae", "Bhae", "Baan", "Bhan", "Fe2", "Fe3",
+                        "FeS", "FeCO3", "FeS2", "Fe3PO42", "PO4_Fe3", "Mn2",
+                        "Mn3", "Mn4", "MnS", "MnCO3", "PO4_Mn3","H2S",
+                        "S0", "S2O3", "SO4", "Sipart", "DIC", "Alk",
+                        "pH", "T", "S", "LimLight", "LimT", "LimN"]
+
+varnames = oxy_varnames
+
+# TODO: automaticaly identify sed and sed2 based on dz
 # vertical layers numbers for SWI (sed) and upper boundary of BBL (sed2)
 sed  = 45       # SWI
 sed2 = 42       # upper boundary of BBL
@@ -10,14 +24,13 @@ icol_C =  0
 # z-time (time period) [YYYY-MM-DD]  None: *from start* or *to end*
 t1_ztime = None
 t2_ztime = None
+yspace = 5
 # time period for ONE selected year or a selected SHORT period [YYYY-MM-DD]
 t1_1yr = '2020-01-01'
 t2_1yr = '2021-01-01'
 # thickness of BBL and sediments for plotting (in cm)
 bbl_h = 10
 
-#----------------------------------------------------------------------
-yspace = 1
 #----------------------------------------------------------------------
 # dates to draw transect
 ts_transect = ['2016-07-15 00:00:00', '2016-07-20 00:00:00', '2016-07-30 00:00:00',
