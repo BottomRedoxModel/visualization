@@ -9,7 +9,7 @@ import grid_maker as gm
 
 sed = cfg.sed
 sed2 = cfg.sed2
-tstep = cfg.tstep
+tstep = cfg.anim_tstep
 
 
 def plot_param(ds, name, lims_dict, sed_lims_dict, x, y, y_sed, axis,axis_cb,axis_sed,axis_cb_sed):
