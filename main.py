@@ -9,11 +9,11 @@ import config as cfg
 import utils
 from model_vs_obs import model_vs_obs
 
-
-fname = '../oslo_br_out.nc' # utils.get_fname('Model output')
+# commit for eya
+fname = utils.get_fname('Model output')
 
 ds = xr.open_dataset(fname)
-name_obs = '../Aqm_Dk1_cleaned.xlsx'  # utils.get_fname('Observations')
+name_obs = utils.get_fname('Observations')
 
 model_vs_obs(ds, name_obs, plot_sed=False)
 #---------------------------------------------------------------
