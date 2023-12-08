@@ -20,8 +20,7 @@ Need to make it more general
 pairs = {'O2 uM': 'O2',
          'SiO2 uM': 'Si',
          'PO4 uM': 'PO4',
-         'NO3 uM': 'NO3',
-          }
+         'NO3 uM': 'NO3'}
 
 # not sure if it is the best solution
 # maybe make them datetime directly in config?

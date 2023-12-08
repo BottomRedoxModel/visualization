@@ -1,21 +1,29 @@
 import xarray as xr
+import config as cfg
 
 import one_yr
 import z_time
 import transect
 import x_time
 import anim_transect
-import config as cfg
 import utils
 from model_vs_obs import model_vs_obs
+import concentration_profiles as conc_prof
 
 
-fname = '../oslo_br_out.nc' # utils.get_fname('Model output')
+ds = xr.open_dataset(cfg.fname)
 
-ds = xr.open_dataset(fname)
-name_obs = '../Aqm_Dk1_cleaned.xlsx'  # utils.get_fname('Observations')
+#---------------------------------------------------------------
+# Model vs observation profiles
+#---------------------------------------------------------------
+conc_prof.plot_fig(ds, colors_vax2, 'set2')
 
-model_vs_obs(ds, name_obs, plot_sed=False)
+#---------------------------------------------------------------
+# Model vs observation profiles
+#---------------------------------------------------------------
+# name_obs = '../Aqm_Dk1_cleaned.xlsx'  # utils.get_fname('Observations')
+# model_vs_obs(ds, name_obs, plot_sed=False)
+
 #---------------------------------------------------------------
 # TEMPORAL VARIABILITY OF VERT. DISTRIBUTIONS
 #---------------------------------------------------------------
