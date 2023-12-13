@@ -32,8 +32,13 @@ t2_ztime = None
 yspace = 5
 
 # time period for ONE selected year or a selected SHORT period [YYYY-MM-DD]
+
 t1_1yr = '2020-01-01'
 t2_1yr = '2021-01-01'
+# thickness of BBL and sediments for plotting (in cm)
+bbl_h = 10
+plot_1year = True #True #False # to plot changes in short selected period (<= 1 year)
+
 
 # dates to draw transect
 ts_transect = ['2016-07-15 00:00:00', '2016-07-20 00:00:00', '2016-07-30 00:00:00',
@@ -45,6 +50,7 @@ ts_transect = ['2016-07-15 00:00:00', '2016-07-20 00:00:00', '2016-07-30 00:00:0
 anim_tstep = 1  # output steps for animation  (every 3d step, i.e. 3 hours if timestep is 1 hour)
 
 # model vs observations
+plot_obs_n_mod =False # to plot changes in short selected period (<= 1 year)
 t1_mod_vs_obs = None # '2020-01-01'
 t2_mod_vs_obs = None  # '2021-01-01'
 mod_tstep = 24  # in model steps

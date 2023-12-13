@@ -9,22 +9,39 @@ import config as cfg
 import utils
 from model_vs_obs import model_vs_obs
 
-# commit for eya
+# read file with model output
 fname = utils.get_fname('Model output')
-
 ds = xr.open_dataset(fname)
-name_obs = utils.get_fname('Observations')
 
-model_vs_obs(ds, name_obs, plot_sed=False)
+l = list(ds.keys())
+l = [ x for x in l if "sink:" not in x ]
+l = [ x for x in l if "fick:" not in x ]
+l = [ x for x in l if x not in ["z", "z2", "time", "Ux"] ]
+print(l)
+print(len(l))
+all_vars = l
+#---------------------------------------------------------------
+# VERTICAL PROFILES MODEL VS OBSERVATIONS
+#---------------------------------------------------------------
+# read file with observations
+if cfg.plot_obs_n_mod:
+   name_obs = utils.get_fname('Observations')
+   model_vs_obs(ds, name_obs, plot_sed=False)
 #---------------------------------------------------------------
 # TEMPORAL VARIABILITY OF VERT. DISTRIBUTIONS
 #---------------------------------------------------------------
 # time period (dataset, picname, varnames, nrows, ncols)
 # z_time.fig_ztime(ds, 'ztime-oxy', cfg.varnames, cfg.icol_0, 2, 3)
+z_time.fig_ztime(ds, 'ztime-BROM-all-yrs', cfg.brom_state_variables, cfg.icol_0, 8, 6)
 
 # 1 year (dataset, picname, varnames, nrows, ncols)
 # one_yr.fig_ztime(ds, 'ztime-oxy-1yr', cfg.varnames, cfg.icol_0, 2, 3)
 
+if cfg.plot_1year:
+    one_yr.fig_ztime(ds, 'ztime-BROM-1yr_1p', all_vars[:48], cfg.icol_0, 8, 6)
+    one_yr.fig_ztime(ds, 'ztime-BROM-1yr_2p', all_vars[48:96], cfg.icol_0, 8, 6)
+    one_yr.fig_ztime(ds, 'ztime-BROM-1yr_3p', all_vars[96:144], cfg.icol_0, 8, 6)
+    one_yr.fig_ztime(ds, 'ztime-BROM-1yr_4p', all_vars[144:192], cfg.icol_0, 8, 6)
 #---------------------------------------------------------------
 #TRANSECTS
 #---------------------------------------------------------------
