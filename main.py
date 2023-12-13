@@ -1,59 +1,35 @@
 import xarray as xr
-import os
-from tkinter.filedialog import askopenfilename
+
 import one_yr
 import z_time
 import transect
 import x_time
 import anim_transect
 import config as cfg
-import matplotlib.pyplot as plt
-import numpy as np
+import utils
+from model_vs_obs import model_vs_obs
 
-# TODO: transfer to utils
-def get_fname():
-    fname = askopenfilename(
-        initialdir=os.getcwd(),
-        filetypes=(("netcdf file", "*.nc"), ("All Files", "*.*")),
-        title="Choose a needed file.")
-    return fname
 
-fname = get_fname()
+fname = '../oslo_br_out.nc' # utils.get_fname('Model output')
 
 ds = xr.open_dataset(fname)
-all_varnames = ds.keys()
-oxy_varnames = ['Oxy', 'Phy', 'Het', 'POM', 'DOM', 'NUT',]
-carb_varnames = ['DIC', 'Alk','CaCO3',  'pH',  'Om_Ar','CaCO3_form', 'pCO2', 'CO3','CaCO3_diss',]
+name_obs = '../Aqm_Dk1_cleaned.xlsx'  # utils.get_fname('Observations')
 
-brom_state_variables = ["Phy", "Het", "POML", "POMR", "DOML", "DOMR",
-                        "O2", "NH4", "NO2", "NO3", "PO4", "Si",
-                        "Baae", "Bhae", "Baan", "Bhan", "Fe2", "Fe3",
-                        "FeS", "FeCO3", "FeS2", "Fe3PO42", "PO4_Fe3", "Mn2",
-                        "Mn3", "Mn4", "MnS", "MnCO3", "PO4_Mn3","H2S",
-                        "S0", "S2O3", "SO4", "Sipart", "DIC", "Alk",
-                        "pH", "T", "S", "LimLight", "LimT", "LimN"]
-l = list(ds.keys())
-l = [ x for x in l if "sink:" not in x ]
-l = [ x for x in l if "fick:" not in x ]
-l = [ x for x in l if x not in ["z", "z2", "time", "Ux"] ]
-print(l)
-print(len(l))
-all_vars = l
-
+model_vs_obs(ds, name_obs, plot_sed=False)
 #---------------------------------------------------------------
 # TEMPORAL VARIABILITY OF VERT. DISTRIBUTIONS
 #---------------------------------------------------------------
 # time period (dataset, picname, varnames, nrows, ncols)
-z_time.fig_ztime(ds, 'ztime-oxy', oxy_varnames, cfg.icol_0, 2, 3)
-#######################################################
+# z_time.fig_ztime(ds, 'ztime-oxy', cfg.varnames, cfg.icol_0, 2, 3)
+
 # 1 year (dataset, picname, varnames, nrows, ncols)
-one_yr.fig_ztime(ds, 'ztime-oxy-1yr', oxy_varnames, cfg.icol_0, 2, 3)
+# one_yr.fig_ztime(ds, 'ztime-oxy-1yr', cfg.varnames, cfg.icol_0, 2, 3)
 
 #---------------------------------------------------------------
 #TRANSECTS
 #---------------------------------------------------------------
 # transect snapshot (dataset, picname, varnames, day, nrows, ncols)
-transect.fig_transect(ds, 'transect-2015', oxy_varnames, '2014-10-15 00:00:00', 2, 3)
+# transect.fig_transect(ds, 'transect-2015', cfg.varnames, '2014-10-15 00:00:00', 2, 3)
 
 #---------------------------------------------------------------
 # ANIMATION
@@ -64,4 +40,4 @@ transect.fig_transect(ds, 'transect-2015', oxy_varnames, '2014-10-15 00:00:00', 
 # MAPS
 #---------------------------------------------------------------
 # x-time map (dataset, picname, varnames, z-level, nrows, ncols)
-x_time.fig_map(ds, 'xtime-oxy', oxy_varnames, 0, 3, 2)
+# x_time.fig_map(ds, 'xtime-oxy', cfg.varnames, 0, 3, 2)

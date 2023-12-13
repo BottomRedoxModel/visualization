@@ -4,93 +4,116 @@ from tkinter.filedialog import askopenfilename
 import os
 import pandas as pd
 import numpy as np
+import config as cfg
+import utils
+import seaborn as sns
 
-def get_fname(title):
-    fname = askopenfilename(
-        initialdir=os.getcwd(),
-        title=title)
-    return fname
+'''
+Now this module is adapted for data from AquaMonitor
+Need to make it more general
+'''
 
-name_ds = get_fname('Model output')
-name_obs = get_fname('Observations')
-datemin = np.datetime64('2065-01-01')  # start
-datemax = np.datetime64('2066-01-01')  # stop
-dstep = 2  # plot every Nth day
-zswi = 12  # index of SWI
-zswi2 = 10
-
-# name_ds = 'BROM_Seva.nc'
-# name_obs = 'obs_SevBay.xls'
-
-ds = xr.open_dataset(name_ds)
-ds = ds.sel(time=slice(datemin, datemax))
-wat = pd.read_excel(name_obs, sheet_name=0)
-sed = pd.read_excel(name_obs, sheet_name=1)
-
-# read depthes
-zs = ds['z'].values
-zsed = ((zs - zs[zswi])*100)
 # pairs of plotted variables
 # {'obs': 'model_var'} or
 # {'obs': ['model_var1', 'model_var2']
 # - in this case sum model_var1 + model_var2
 pairs = {'O2 uM': 'O2',
-          'Alk uM': 'Alk',
-          'pH': 'pH',
-          'NH4 uM': 'NH4',
-          'SiO3 uM': 'Si',
+         'SiO2 uM': 'Si',
          'PO4 uM': 'PO4',
-          'NO2+NO3 uM': ['NO2', 'NO3'],
-          'Fe (II) uM': 'Fe2',
-          'H2S uM': 'H2S',
-          'Mn (II) uM': 'Mn2',
-          'Corg uM': ['DOMR', 'POML' ,'POMR' ,'DOML'] * 7
+         'NO3 uM': 'NO3',
           }
 
-fig = plt.figure(figsize=(15, 15))
-gs0 = fig.add_gridspec(3, 4, hspace=0.2, wspace=0.15)
+# not sure if it is the best solution
+# maybe make them datetime directly in config?
+datemin = cfg.t1_mod_vs_obs  # start
+datemax = cfg.t2_mod_vs_obs  # stop
+dstep = cfg.mod_tstep  # Nth days
+icol = 0
 
-for (k, v), gs in zip(pairs.items(), gs0):
-    print(k)
-    # get model data
-    if type(v) != list:
-        md = ds[v].values[:,:,0]
-    else:  # if a list is passed, we sum it (but only for 2 arrays)))
-        md = ds[v[0]].values[:,:,0] + ds[v[1]].values[:,:,0]
+wdepth_name = 'depth m'
+seddepth_name = 'depth cm'
 
-    gs2 = gs.subgridspec(2, 1, height_ratios=(2,1), hspace=0.3)
-    axw = fig.add_subplot(gs2[0])  # axis for water column
-    axsed = fig.add_subplot(gs2[1])  # axis for sediments
+def model_vs_obs(ds, name_obs, plot_sed=True):
+    # water: depth in m
+    # sed: depth in cm, z-axis down (increases with depth of sediment)
+    
+    ds = ds.sel(time=slice(datemin, datemax))
+    months = ds['time'].dt.month.values
+    twinter = np.isin(months, [1, 2, 3, 11, 12])
+    tsummer = np.isin(months, [4, 5, 6, 7, 8, 9, 10])
 
-    # WATER COLUMN
-    axw.set_title(k)
-    axw.invert_yaxis()
-    axw.grid(axis='y')
-    axw.axhspan(17,-0.5, color='dodgerblue', alpha=0.2)
-    axw.set_ylim(17,-0.5)
-    # model curves
-    md_summer = md[91:273, :]
-    md_winter = md[np.r_[0:91, 273:365], :]
-#    md_winter = md[np.r_[0:91, 273:365], :]
-    axw.plot(md_summer[::dstep,:zswi].T, zs[:zswi], color='coral', alpha=0.3)
-    axw.plot(md_winter[::dstep,:zswi].T, zs[:zswi], color='royalblue', alpha=0.3)
-    # observations
-    if k in list(wat.columns):
-        axw.scatter(wat[k], wat['depth m'], c='navy', zorder=10)
+    wat = pd.read_excel(name_obs, sheet_name='water')
 
-    # SEDIMENTS
-    axsed.invert_yaxis()
-    axsed.grid(axis='y')
-    axsed.set_ylim(15, -5)
-    axsed.axhspan(15,0, color='sandybrown', alpha=0.3)
-    axsed.axhspan(0,-10, color='dodgerblue', alpha=0.2)
-    # model curves
-    axsed.plot(md_summer[::dstep,zswi2:].T, zsed[zswi2:], color='coral', alpha=0.3)
-    axsed.plot(md_winter[::dstep,zswi2:].T, zsed[zswi2:], color='royalblue', alpha=0.3)
-    # observations
-    if k in list(sed.columns):
-        depth = sed['depth mm']/10  # from mm to cm
-        axsed.scatter(sed[k], depth, c='crimson', zorder=10)
+    # convert units to moles
+    wat = utils.unit_conversion(wat, mode='mass to moles')
+    wat = utils.make_season(wat, 'SampleDate')
+    if plot_sed:
+        sed = pd.read_excel(name_obs, sheet_name='sediment')
+        sed = utils.unit_conversion(sed, mode='mass to moles')
+        sed = utils.make_season(wat, 'SampleDate')
+    
+    # read model depthes
+    zs = ds['z'].values
+    zsed = ((zs - zs[cfg.sed])*100)
 
-plt.savefig('test_mod_obs.png', dpi=200, bbox_inches='tight')
+    # figure
+    # TODO: make the size automatically depending on nrows,ncols
+    fig = plt.figure(figsize=(15, 15))
+    # nrows, ncols
+    gs0 = fig.add_gridspec(2, 2, hspace=0.2, wspace=0.15)
+    
+    for (k, v), gs in zip(pairs.items(), gs0):
+        print(k)
+
+        # get model data
+        md_winter = ds[v].load().sel(time=twinter).values[:,:,icol]
+        md_summer = ds[v].load().sel(time=tsummer).values[:,:,icol]
+
+        # create 1 or 2 panels depending on plot_sed flag
+        if plot_sed:
+            gs2 = gs.subgridspec(2, 1, height_ratios=(2,1), hspace=0.3)
+        else:
+            gs2 = gs.subgridspec(1, 1)
+        axw = fig.add_subplot(gs2[0])  # axis for water column
+
+        # WATER COLUMN
+        axw.set_title(k)
+        axw.invert_yaxis()
+        axw.grid(axis='y')
+        axw.axhspan(wat[wdepth_name].max(), -0.5, color='dodgerblue', alpha=0.2)
+        axw.set_ylim(top=-0.5)
+
+        # model curves
+        axw.plot(md_summer[::dstep,:cfg.sed].T, zs[:cfg.sed], color='coral', alpha=0.3)
+        axw.plot(md_winter[::dstep,:cfg.sed].T, zs[:cfg.sed], color='royalblue', alpha=0.3)
+
+        # observations
+        if k in list(wat.columns):
+            sns.scatterplot(data=wat, x=k, y=wdepth_name,
+                            hue='season',
+                            size=2, palette=['navy', 'crimson'],
+                            ax=axw)
+    
+        # SEDIMENTS
+        if plot_sed:
+            axsed = fig.add_subplot(gs2[1])  # axis for sediments
+
+            axsed.invert_yaxis()
+            axsed.grid(axis='y')
+            axsed.set_ylim(15, -5)
+            axsed.axhspan(15,0, color='sandybrown', alpha=0.3)
+            axsed.axhspan(0,-10, color='dodgerblue', alpha=0.2)
+
+            # model curves
+            axsed.plot(md_summer[::dstep,cfg.sed2:].T, zsed[cfg.sed2:], color='coral', alpha=0.3)
+            axsed.plot(md_winter[::dstep,cfg.sed2:].T, zsed[cfg.sed2:], color='royalblue', alpha=0.3)
+
+            # observations
+            if k in list(sed.columns):
+                sns.scatterplot(data=sed, x=k, y=seddepth_name,
+                                hue='season',
+                                size=2, palette=['navy', 'crimson'],
+                                ax=axw)
+    
+    plt.savefig('test_mod_obs.png', dpi=200, bbox_inches='tight')
 
