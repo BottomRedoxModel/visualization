@@ -61,7 +61,7 @@ def profiles(ds):
     plt.savefig("vert_dist.png",dpi=300)
 
 
-def depth_timeseries(ds, names, levs):
+def depth_timeseries(ds, names, levs, colors):
     '''
     Adapted from EYA
     temporal changes at depth levs
@@ -79,7 +79,7 @@ def depth_timeseries(ds, names, levs):
 
     for i, name in enumerate(names):
         v = ds[name].values[:,levs[i],cfg.icol_C] # mmol/m3
-        axs[i].plot(xs, v, c='r', lw=1, label=name)
+        axs[i].plot(xs, v, c=colors[i], lw=1, label=name)
         axs[i].set_title('%s, z = %.2f m' % (name, zs[levs[i]]))
 
     plt.tight_layout()
