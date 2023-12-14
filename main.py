@@ -56,4 +56,4 @@ varnames = utils.read_all_vars(ds)  # cfg.varnames
 
 # plot 1D
 # profiles(ds)
-depth_timeseries(ds, ["O2", "NH4"], [cfg.sed, cfg.sed])
+depth_timeseries(ds, ["O2", "O2", "NH4", "DOML"], [cfg.sed, cfg.sed+1, cfg.sed, 20])
