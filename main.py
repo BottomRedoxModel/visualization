@@ -8,6 +8,7 @@ import anim_transect
 import config as cfg
 import utils
 from model_vs_obs import model_vs_obs
+from plot_1D import profiles
 
 # read file with model output
 fname = utils.get_fname('Model output')
@@ -52,3 +53,6 @@ if cfg.plot_1year:
 #---------------------------------------------------------------
 # x-time map (dataset, picname, varnames, z-level, nrows, ncols)
 # x_time.fig_map(ds, 'xtime-oxy', varnames, 0, 3, 2)
+
+# Profiles
+profiles(ds)

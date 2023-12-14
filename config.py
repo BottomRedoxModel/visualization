@@ -54,6 +54,9 @@ plot_obs_n_mod =False # to plot changes in short selected period (<= 1 year)
 t1_mod_vs_obs = None # '2020-01-01'
 t2_mod_vs_obs = None  # '2021-01-01'
 mod_tstep = 24  # in model steps
+
+# profiles
+tprof = 22222  #22222 #222 #888
 #----------------------------------------------------------------------
 
 units_dict = {'$°C$': ['T'],
