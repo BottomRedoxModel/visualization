@@ -4,7 +4,7 @@ import os
 import pandas as pd
 import numpy as np
 import config as cfg
-import utils
+from datetime import datetime, timedelta
 
 
 def profiles(ds):
@@ -61,18 +61,19 @@ def profiles(ds):
     plt.savefig("vert_dist.png",dpi=300)
 
 
-def depth_timeseries(ds, names, levs, colors):
+def depth_timeseries(ds, names, levs, colors, offset=0):
     '''
     Adapted from EYA
     temporal changes at depth levs
     :param ds:
     :param names: list of variable names
     :param levs: list of corresponding depth levels
+    :param offset: time offset in years
     :return:
     '''
 
     ds = ds.sel(time=slice(cfg.t1_ztime, cfg.t2_ztime))
-    xs = ds['time'].values
+    xs = ds['time'].to_index() - timedelta(days = offset*365)  # doesn't include leap years :(
     zs = ds['z'].values
 
     fig, axs = plt.subplots(len(names), 1, figsize=(8, len(names)*1.5))
