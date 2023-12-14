@@ -58,7 +58,7 @@ def model_vs_obs(ds, name_obs, plot_sed=True):
 
     # figure
     # TODO: make the size automatically depending on nrows,ncols
-    fig = plt.figure(figsize=(15, 15))
+    fig = plt.figure(figsize=(8, 8))
     # nrows, ncols
     gs0 = fig.add_gridspec(2, 2, hspace=0.2, wspace=0.15)
     
