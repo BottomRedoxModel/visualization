@@ -46,6 +46,8 @@ ts_transect = ['2016-07-15 00:00:00', '2016-07-20 00:00:00', '2016-07-30 00:00:0
                '2016-10-30 00:00:00', '2016-11-10 00:00:00', '2016-11-15 00:00:00',
                '2016-11-20 00:00:00', '2016-11-25 00:00:00']
 
+transect_lev = 0  # for 1D plot
+
 # animation
 anim_tstep = 1  # output steps for animation  (every 3d step, i.e. 3 hours if timestep is 1 hour)
 

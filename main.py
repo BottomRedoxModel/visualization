@@ -14,7 +14,7 @@ from plot_1D import profiles, depth_timeseries
 fname = utils.get_fname('Model output')
 ds = xr.open_dataset(fname)
 
-varnames = utils.read_all_vars(ds)  # cfg.varnames
+varnames = cfg.varnames   # utils.read_all_vars(ds)
 #---------------------------------------------------------------
 # VERTICAL PROFILES MODEL VS OBSERVATIONS
 #---------------------------------------------------------------
@@ -42,6 +42,7 @@ varnames = utils.read_all_vars(ds)  # cfg.varnames
 #---------------------------------------------------------------
 # transect snapshot (dataset, picname, varnames, day, nrows, ncols)
 # transect.fig_transect(ds, 'transect-2015', varnames, '2014-10-15 00:00:00', 2, 3)
+transect.fig_transect_depth(ds, 'transect-depth', varnames, '2014-10-15 00:00:00', cfg.transect_lev, 2, 3)
 
 #---------------------------------------------------------------
 # ANIMATION
@@ -56,7 +57,7 @@ varnames = utils.read_all_vars(ds)  # cfg.varnames
 
 # plot 1D
 # profiles(ds)
-depth_timeseries(ds, ["O2", "O2", "NH4", "DOML"],
-                 [cfg.sed, cfg.sed+1, cfg.sed, 20],
-                 ['b', 'g', 'r', 'y'],
-                 offset=91)  # adjust years here
+# depth_timeseries(ds, ["O2", "O2", "NH4", "DOML"],
+#                  [cfg.sed, cfg.sed+1, cfg.sed, 20],
+#                  ['b', 'g', 'r', 'y'],
+#                  offset=91)  # adjust years here
