@@ -9,12 +9,14 @@ import config as cfg
 import utils
 from model_vs_obs import model_vs_obs
 from plot_1D import profiles, depth_timeseries
+from vert import vert
 
 # read file with model output
 fname = utils.get_fname('Model output')
 ds = xr.open_dataset(fname)
 
-varnames = cfg.varnames   # utils.read_all_vars(ds)
+# varnames = cfg.varnames
+varnames = utils.read_all_vars(ds)
 #---------------------------------------------------------------
 # VERTICAL PROFILES MODEL VS OBSERVATIONS
 #---------------------------------------------------------------
@@ -42,7 +44,10 @@ varnames = cfg.varnames   # utils.read_all_vars(ds)
 #---------------------------------------------------------------
 # transect snapshot (dataset, picname, varnames, day, nrows, ncols)
 # transect.fig_transect(ds, 'transect-2015', varnames, '2014-10-15 00:00:00', 2, 3)
-transect.fig_transect_depth(ds, 'transect-depth', varnames, '2014-10-15 00:00:00', cfg.transect_lev, 2, 3)
+# transect.fig_transect_depth(ds, 'transect-depth', varnames, '2014-10-15 00:00:00', cfg.transect_lev, 2, 3)
+
+for iday in cfg.vidays:
+    vert(ds, iday, cfg.vicol)
 
 #---------------------------------------------------------------
 # ANIMATION

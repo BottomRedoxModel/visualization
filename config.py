@@ -59,6 +59,11 @@ mod_tstep = 24  # in model steps
 
 # profiles
 tprof = 22222  #22222 #222 #888
+
+# vertical
+vidays = [395]   # drawn day  15 Mar # viday = 255 # drawn day 15 Aug
+vicol = 0
+hor_ax = 'z'  # Vertical axis. Only z or dens.
 #----------------------------------------------------------------------
 
 units_dict = {'$°C$': ['T'],
