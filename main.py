@@ -12,8 +12,13 @@ from plot_1D import profiles, depth_timeseries
 from vert import vert
 from profile_plotter import conc_profiles
 
+#fname = utils.get_fname('Model output')
 # read file with model output
-fname = '../BS_br_out.nc' # utils.get_fname('Model output')
+#fname = '../BS_br_out.nc' # utils.get_fname('Model output')#
+fname = '//wsl.localhost/Ubuntu-20.04/home/eya/cases/wchips/RT_br_out.nc'
+
+
+
 ds = xr.open_dataset(fname)
 
 # varnames = cfg.varnames
@@ -30,16 +35,16 @@ varnames = utils.read_all_vars(ds)
 # #---------------------------------------------------------------
 # # time period (dataset, picname, varnames, nrows, ncols)
 # # z_time.fig_ztime(ds, 'ztime-oxy', varnames, cfg.icol_0, 2, 3)
-# z_time.fig_ztime(ds, 'ztime-BROM-all-yrs', cfg.brom_state_variables, cfg.icol_0, 8, 6)
+z_time.fig_ztime(ds, 'ztime-BROM-all-yrs', cfg.brom_state_variables, cfg.icol_0, 8, 6)
 #
 # # 1 year (dataset, picname, varnames, nrows, ncols)
 # # one_yr.fig_ztime(ds, 'ztime-oxy-1yr', varnames, cfg.icol_0, 2, 3)
 #
-# if cfg.plot_1year:
-#     one_yr.fig_ztime(ds, 'ztime-BROM-1yr_1p', varnames[:48], cfg.icol_0, 8, 6)
-#     one_yr.fig_ztime(ds, 'ztime-BROM-1yr_2p', varnames[48:96], cfg.icol_0, 8, 6)
-#     one_yr.fig_ztime(ds, 'ztime-BROM-1yr_3p', varnames[96:144], cfg.icol_0, 8, 6)
-#     one_yr.fig_ztime(ds, 'ztime-BROM-1yr_4p', varnames[144:192], cfg.icol_0, 8, 6)
+if cfg.plot_1year:
+    one_yr.fig_ztime(ds, 'ztime-BROM-1yr_1p', varnames[:48], cfg.icol_0, 8, 6)
+    one_yr.fig_ztime(ds, 'ztime-BROM-1yr_2p', varnames[48:96], cfg.icol_0, 8, 6)
+    one_yr.fig_ztime(ds, 'ztime-BROM-1yr_3p', varnames[96:144], cfg.icol_0, 8, 6)
+    one_yr.fig_ztime(ds, 'ztime-BROM-1yr_4p', varnames[144:192], cfg.icol_0, 8, 6)
 #---------------------------------------------------------------
 #TRANSECTS
 #---------------------------------------------------------------

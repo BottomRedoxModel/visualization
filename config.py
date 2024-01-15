@@ -14,31 +14,36 @@ brom_state_variables = ["Phy", "Het", "POML", "POMR", "DOML", "DOMR",
 
 # what we will actually plot
 varnames = oxy_varnames
-
-# TODO: automaticaly identify sed and sed2 based on dz
+site = 1 #case 1=Norskehavet, 2=Black Sea; 3=Oslofjord
+if(site==1):
 # vertical layers numbers for SWI (sed) and upper boundary of BBL (sed2)
-sed  = 45       # SWI
-sed2 = 42       # upper boundary of BBL
+    sed  = 45 #45       # SWI
+    sed2 = 41 #42      # upper boundary of BBL
+# time period for ONE selected year or a selected SHORT period [YYYY-MM-DD]
+    t1_1yr = '2020-01-01'
+    t2_1yr = '2021-01-01'
+
+if(site==2):
+# vertical layers numbers for SWI (sed) and upper boundary of BBL (sed2)
+    sed  = 60 #45       # SWI for Black Sea
+    sed2 = 59 #42      # upper boundary of BBL for Black Sea
+# time period for ONE selected year or a selected SHORT period [YYYY-MM-DD]
+    t1_1yr = '2027-01-01'# '2020-01-01'
+    t2_1yr = '2027-12-31' #'2021-01-01'
 
 # column for baseline (icol_0) and injection (icol_C)
 icol_0 = 0  # baseline column
-icol_C =  0
+icol_C = 0
 # thickness of BBL and sediments for plotting (in cm)
-bbl_h = 10
-
+bbl_h = 10 #10
 # z-time (time period) [YYYY-MM-DD]  None: *from start* or *to end*
 t1_ztime = None
 t2_ztime = None
 yspace = 5
 
-# time period for ONE selected year or a selected SHORT period [YYYY-MM-DD]
 
-t1_1yr = '2020-01-01'
-t2_1yr = '2021-01-01'
-# thickness of BBL and sediments for plotting (in cm)
-bbl_h = 10
 plot_1year = True #True #False # to plot changes in short selected period (<= 1 year)
-
+plot_depth_timeser = False # to plot temporal changes at selected depths
 
 # dates to draw transect
 ts_transect = ['2016-07-15 00:00:00', '2016-07-20 00:00:00', '2016-07-30 00:00:00',
@@ -62,7 +67,7 @@ tprof = 22222  #22222 #222 #888
 
 # vertical (OLD MATWEY, without sediments)
 # !!! OBS: FISA will fix it later !!!
-vidays = [395]   # drawn day  15 Mar # viday = 255 # drawn day 15 Aug
+vidays = [6935,6966,6995,7026,7056,7086,7117,7147,7178,7219,7249,7280]   # days numbers to plot vert. distr.
 vicol = 0
 hor_ax = 'z'  # Vertical axis. Only z or dens.
 
