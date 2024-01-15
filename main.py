@@ -12,12 +12,10 @@ from plot_1D import profiles, depth_timeseries
 from vert import vert
 from profile_plotter import conc_profiles
 
-#fname = utils.get_fname('Model output')
+# fname = utils.get_fname('Model output')
 # read file with model output
 #fname = '../BS_br_out.nc' # utils.get_fname('Model output')#
 fname = '//wsl.localhost/Ubuntu-20.04/home/eya/cases/wchips/RT_br_out.nc'
-
-
 
 ds = xr.open_dataset(fname)
 
@@ -75,5 +73,5 @@ if cfg.plot_1year:
 #                  offset=91)  # adjust years here
 
 # profiles
-conc_profiles(ds, 'set1')
-conc_profiles(ds, 'set2')
+for iday in cfg.pidays:
+    conc_profiles(ds, iday)

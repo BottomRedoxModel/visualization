@@ -5,7 +5,6 @@ import gsw
 import pandas as pd
 import config as cfg
 
-iday = cfg.piday
 icol = cfg.picol
 hor_ax = cfg.hor_ax  # Horizontal axis. Only z or dens.
 sed = cfg.sed
@@ -15,40 +14,34 @@ plot_obs = cfg.plot_obs
 obs_files = {}
 
 # drawn concentrations
-var = {
-    'set1': [
+var = [
         ['T', 'S', 'O2'],
         ['H2S', 'S2O3', 'S0'],
         ['NO2', 'NO3', 'NH4'],
         ['Mn4', 'Mn3', 'Mn2'],
         ['Fe3', 'Fe2'],
-    ],
-    'set2': [
+
         ['Phy', 'Het'],
         ['Baae', 'Bhae', 'Baan', 'Bhan'],
         ['DOML', 'DOMR', 'POML', 'POMR'],
         ['PO4', 'Si', 'CH4'],
         ['pH', 'Alk', 'DIC']
-    ],
-}
+    ]
 
 # drawn concentration colors
-colors_vax = {
-    'set1': [
+colors_vax = [
         ['#377eb8', '#e41a1c', '#4daf4a'],
         ['#984ea3', '#a65628', '#e6ab02'],
         ['#377eb8', '#e41a1c', '#f781bf'],
         ['#377eb8', '#4daf4a', '#984ea3'],
         ['#a65628', '#f781bf'],
-    ],
-    'set2': [
+
         ['#4daf4a', '#ff7f00'],
         ['#377eb8', '#4daf4a', '#984ea3', '#e6ab02'],
         ['#a65628', '#f781bf', '#e41a1c', '#377eb8'],
         ['#4daf4a', '#984ea3', '#ff7f00'],
         ['#e6ab02', '#a65628', '#f781bf'],
       ]
-}
 
 # {model: obs}
 variable_mapping = {"NO3": "NO3 uM",
@@ -93,7 +86,7 @@ def configure_ax(axn, av, ac, shift):
     axn.set_xlabel(av, color=ac, fontsize=13)
 
 
-def plot_profile(ax, ds, vax, colors, depth, plot_type, obs_data):
+def plot_profile(ax, ds, vax, colors, depth, plot_type, iday, obs_data):
 
     ax.tick_params(bottom=False, labelbottom=False)
     shift = 0
@@ -116,22 +109,22 @@ def plot_profile(ax, ds, vax, colors, depth, plot_type, obs_data):
 
     # we do it only for the last axn
     if plot_type == 'water':
-        axn.axhspan(depth.max(), -0.5, color='dodgerblue', alpha=0.2)
-        axn.set_ylim(top=depth.max(), bottom=0)
+        axn.axhspan(-0.5, depth.max(), color='dodgerblue', alpha=0.2)
+        axn.set_ylim(top=0, bottom=depth.max())
     elif plot_type == 'sediment':
         axn.axhspan(15, 0, color='sandybrown', alpha=0.3)
         axn.axhspan(0, -10, color='dodgerblue', alpha=0.2)
         axn.set_ylim(top=-10, bottom=10)
 
 
-def conc_profiles(ds, set):
+def conc_profiles(ds, iday):
     depth = get_depth(ds, hor_ax, sed, iday)
     depth_sed = ((depth - depth[sed]) * 100)
 
-    fig, axs = plt.subplots(2, 5, figsize=(15, 15), gridspec_kw={'hspace': 0.6, 'wspace': 0.25})
+    fig, axs = plt.subplots(2, 10, figsize=(25, 10), gridspec_kw={'hspace': 0.8, 'wspace': 0.32})
     obs_data = load_obs_data(plot_obs, obs_files)
 
-    for i, (vax, colors) in enumerate(zip(var[set], colors_vax[set])):
-        plot_profile(axs[0,i], ds, vax, colors, depth, 'water', obs_data)
-        plot_profile(axs[1, i], ds, vax, colors, depth_sed, 'sediment', obs_data)
-    plt.savefig(set + '.png', dpi=400, bbox_inches='tight')
+    for i, (vax, colors) in enumerate(zip(var, colors_vax)):
+        plot_profile(axs[0,i], ds, vax, colors, depth, 'water', iday, obs_data)
+        plot_profile(axs[1, i], ds, vax, colors, depth_sed, 'sediment', iday, obs_data)
+    plt.savefig('prof_%i.png' % iday, dpi=400, bbox_inches='tight')

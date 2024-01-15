@@ -15,7 +15,7 @@ brom_state_variables = ["Phy", "Het", "POML", "POMR", "DOML", "DOMR",
 # what we will actually plot
 varnames = oxy_varnames
 site = 1 #case 1=Norskehavet, 2=Black Sea; 3=Oslofjord
-if(site==1):
+if site==1:
 # vertical layers numbers for SWI (sed) and upper boundary of BBL (sed2)
     sed  = 45 #45       # SWI
     sed2 = 41 #42      # upper boundary of BBL
@@ -23,7 +23,7 @@ if(site==1):
     t1_1yr = '2020-01-01'
     t2_1yr = '2021-01-01'
 
-if(site==2):
+if site==2:
 # vertical layers numbers for SWI (sed) and upper boundary of BBL (sed2)
     sed  = 60 #45       # SWI for Black Sea
     sed2 = 59 #42      # upper boundary of BBL for Black Sea
@@ -72,7 +72,7 @@ vicol = 0
 hor_ax = 'z'  # Vertical axis. Only z or dens.
 
 # concentrations profiles with sediments (MATWEY)
-piday = 365
+pidays = [365, 366]
 picol = 0
 plot_obs = False
 
