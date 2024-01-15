@@ -127,4 +127,6 @@ def conc_profiles(ds, iday):
     for i, (vax, colors) in enumerate(zip(var, colors_vax)):
         plot_profile(axs[0,i], ds, vax, colors, depth, 'water', iday, obs_data)
         plot_profile(axs[1, i], ds, vax, colors, depth_sed, 'sediment', iday, obs_data)
+
+    fig.suptitle('JDAY: %i' % iday, y=1.05, fontweight='bold')
     plt.savefig('prof_%i.png' % iday, dpi=400, bbox_inches='tight')
