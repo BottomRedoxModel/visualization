@@ -10,9 +10,10 @@ import utils
 from model_vs_obs import model_vs_obs
 from plot_1D import profiles, depth_timeseries
 from vert import vert
+from profile_plotter import conc_profiles
 
 # read file with model output
-fname = utils.get_fname('Model output')
+fname = '../BS_br_out.nc' # utils.get_fname('Model output')
 ds = xr.open_dataset(fname)
 
 # varnames = cfg.varnames
@@ -46,8 +47,9 @@ varnames = utils.read_all_vars(ds)
 # transect.fig_transect(ds, 'transect-2015', varnames, '2014-10-15 00:00:00', 2, 3)
 # transect.fig_transect_depth(ds, 'transect-depth', varnames, '2014-10-15 00:00:00', cfg.transect_lev, 2, 3)
 
-for iday in cfg.vidays:
-    vert(ds, iday, cfg.vicol)
+# for iday in cfg.vidays:
+#     vert(ds, iday, cfg.vicol)
+
 
 #---------------------------------------------------------------
 # ANIMATION
@@ -66,3 +68,7 @@ for iday in cfg.vidays:
 #                  [cfg.sed, cfg.sed+1, cfg.sed, 20],
 #                  ['b', 'g', 'r', 'y'],
 #                  offset=91)  # adjust years here
+
+# profiles
+conc_profiles(ds, 'set1')
+conc_profiles(ds, 'set2')

@@ -4,13 +4,14 @@ from tkinter.filedialog import askopenfilename
 import os
 import gsw
 import pandas as pd
-import re
+import config as cfg
 
 plt.rcParams["figure.facecolor"] = 'w'
 
 iday = 5688
 hor_ax = 'z'  # Horizontal axis. Only z or dens.
-sed = 17
+sed = cfg.sed
+plot_obs = False
 
 # drawn concentrations
 vax1 = [['T', 'S', 'O2'],
@@ -54,17 +55,12 @@ variable_mapping = {"NO3": "NO3 uM",
                     "O2": "O2 (µM)",
                     "T": "T"}
 
-obs_wat = pd.read_excel('PI_aug15.xlsx', sheet_name='water')
-obs_sed = pd.read_excel('PI_aug15.xlsx', sheet_name='sediment')
-obs_o2_wat = pd.read_excel('PI_aug15_O2_T_Tur_Chla.xlsx', sheet_name='water')
-obs_o2_sed = pd.read_excel('PI_aug15_O2_T_Tur_Chla.xlsx', sheet_name='sediment')
+if plot_obs:
+    obs_wat = pd.read_excel('PI_aug15.xlsx', sheet_name='water')
+    obs_sed = pd.read_excel('PI_aug15.xlsx', sheet_name='sediment')
+    obs_o2_wat = pd.read_excel('PI_aug15_O2_T_Tur_Chla.xlsx', sheet_name='water')
+    obs_o2_sed = pd.read_excel('PI_aug15_O2_T_Tur_Chla.xlsx', sheet_name='sediment')
 
-def get_fname():
-    fpath = askopenfilename(
-        initialdir=os.getcwd(),
-        filetypes=(("netcdf file", "*.nc"), ("All Files", "*.*")),
-        title="Choose a needed file.")
-    return fpath
 
 def plot_ax(axs, vax, colors_vax, ds, depth, plot_type):
      for i, ax in enumerate(axs):
@@ -87,27 +83,31 @@ def plot_ax(axs, vax, colors_vax, ds, depth, plot_type):
             axn = ax.twiny()
             axn.plot(var, depth, zorder=5, color=ac, lw=1.5)
 
-            if av in variable_mapping.keys():
-                obsname = variable_mapping[av]
             if plot_type == 'water':
-                axn.set_ylim(6,0)  # ADJUST DEPTHS IF YOU CHANGE MODEL POINT
-
-                if av in ['O2', 'T']:
-                    obsv = obs_o2_wat[[obsname, 'depth']]
-                elif av in variable_mapping.keys():
-                    obsv = obs_wat[[obsname, 'depth']]
-
+                axn.set_ylim(6, 0)  # ADJUST DEPTHS IF YOU CHANGE MODEL POINT
             elif plot_type == 'sediment':
                 axn.set_ylim(top=-10, bottom=10)
 
-                if av in ['O2', 'T']:
-                    obsv = obs_o2_sed[[obsname, 'depth']]
-                elif av in variable_mapping.keys():
-                    obsv = obs_sed[[obsname, 'depth']]
+            if plot_obs:
+                if av in variable_mapping.keys():
+                    obsname = variable_mapping[av]
+                if plot_type == 'water':
 
-            # Observations
-            if av in variable_mapping.keys():
-                axn.scatter(obsv[obsname], obsv['depth'], c=ac, s=10, marker='x', label=av)
+                    if av in ['O2', 'T']:
+                        obsv = obs_o2_wat[[obsname, 'depth']]
+                    elif av in variable_mapping.keys():
+                        obsv = obs_wat[[obsname, 'depth']]
+
+                elif plot_type == 'sediment':
+
+                    if av in ['O2', 'T']:
+                        obsv = obs_o2_sed[[obsname, 'depth']]
+                    elif av in variable_mapping.keys():
+                        obsv = obs_sed[[obsname, 'depth']]
+
+                # Observations
+                if av in variable_mapping.keys():
+                    axn.scatter(obsv[obsname], obsv['depth'], c=ac, s=10, marker='x', label=av)
 
             axn.spines['top'].set_position(('outward', shift))
             shift += 41
@@ -131,9 +131,7 @@ def plot_ax(axs, vax, colors_vax, ds, depth, plot_type):
             axn.axhspan(0,-10, color='dodgerblue', alpha=0.2)
 
 
-def plot_fig(vax, colors_vax, fname):
-    fpath = get_fname()
-    ds = xr.open_dataset(fpath)
+def conc_profiles(ds, vax, colors_vax, fname):
 
     if hor_ax == 'z':
         depth = ds['z']  # depth
@@ -155,4 +153,4 @@ def plot_fig(vax, colors_vax, fname):
     plt.savefig(fname + '.png', dpi=400, bbox_inches='tight')
 
 # plot_fig(vax1, colors_vax1, 'set1')
-plot_fig(vax2, colors_vax2, 'set2')
+conc_profiles(vax2, colors_vax2, 'set2')

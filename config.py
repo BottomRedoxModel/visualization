@@ -57,13 +57,20 @@ t1_mod_vs_obs = None # '2020-01-01'
 t2_mod_vs_obs = None  # '2021-01-01'
 mod_tstep = 24  # in model steps
 
-# profiles
+# profiles (EYA version)
 tprof = 22222  #22222 #222 #888
 
-# vertical
+# vertical (OLD MATWEY, without sediments)
+# !!! OBS: FISA will fix it later !!!
 vidays = [395]   # drawn day  15 Mar # viday = 255 # drawn day 15 Aug
 vicol = 0
 hor_ax = 'z'  # Vertical axis. Only z or dens.
+
+# concentrations profiles with sediments (MATWEY)
+piday = 365
+picol = 0
+plot_obs = False
+
 #----------------------------------------------------------------------
 
 units_dict = {'$°C$': ['T'],
