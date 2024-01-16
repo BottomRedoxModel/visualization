@@ -128,5 +128,6 @@ def conc_profiles(ds, iday):
         plot_profile(axs[0,i], ds, vax, colors, depth, 'water', iday, obs_data)
         plot_profile(axs[1, i], ds, vax, colors, depth_sed, 'sediment', iday, obs_data)
 
-    fig.suptitle('JDAY: %i' % iday, y=1.05, fontweight='bold')
+    date = ds['time'][iday].values
+    fig.suptitle(date.astype(str)[:10], y=1.05, fontweight='bold')
     plt.savefig('prof_%i.png' % iday, dpi=400, bbox_inches='tight')
