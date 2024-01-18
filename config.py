@@ -37,8 +37,7 @@ if site==2:
 # column for baseline (icol_0) and injection (icol_C)
 icol_0 = 0  # baseline column
 icol_C = 0
-# thickness of BBL and sediments for plotting (in cm)
-bbl_h = 10 #10
+
 # z-time (time period) [YYYY-MM-DD]  None: *from start* or *to end*
 t1_ztime = None
 t2_ztime = None
