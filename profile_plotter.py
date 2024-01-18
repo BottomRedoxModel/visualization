@@ -10,6 +10,7 @@ hor_ax = cfg.hor_ax  # Horizontal axis. Only z or dens.
 sed = cfg.sed
 sed2 = cfg.sed2
 plot_obs = cfg.plot_obs
+bbl_h = cfg.bbl_h
 
 obs_files = {}
 
@@ -114,7 +115,7 @@ def plot_profile(ax, ds, vax, colors, depth, plot_type, iday, obs_data):
     elif plot_type == 'sediment':
         axn.axhspan(15, 0, color='sandybrown', alpha=0.3)
         axn.axhspan(0, -10, color='dodgerblue', alpha=0.2)
-        axn.set_ylim(top=-10, bottom=10)
+        axn.set_ylim(top=-bbl_h, bottom=bbl_h)
 
 
 def conc_profiles(ds, iday):

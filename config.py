@@ -22,6 +22,8 @@ if site==1:
 # time period for ONE selected year or a selected SHORT period [YYYY-MM-DD]
     t1_1yr = '2020-01-01'
     t2_1yr = '2021-01-01'
+# thickness of BBL and sediments for plotting (in cm)
+    bbl_h = 20 #10
 
 if site==2:
 # vertical layers numbers for SWI (sed) and upper boundary of BBL (sed2)
@@ -30,7 +32,8 @@ if site==2:
 # time period for ONE selected year or a selected SHORT period [YYYY-MM-DD]
     t1_1yr = '2027-01-01'# '2020-01-01'
     t2_1yr = '2027-12-31' #'2021-01-01'
-
+# thickness of BBL and sediments for plotting (in cm)
+    bbl_h = 10 #10
 # column for baseline (icol_0) and injection (icol_C)
 icol_0 = 0  # baseline column
 icol_C = 0
@@ -72,7 +75,7 @@ vicol = 0
 hor_ax = 'z'  # Vertical axis. Only z or dens.
 
 # concentrations profiles with sediments (MATWEY)
-pidays = [365, 366]
+pidays = [365,  6935,6966,6995,7026,7056,7086,7117,7147,7178,7219,7249,7280]
 picol = 0
 plot_obs = False
 

@@ -12,6 +12,7 @@ iday = 5688
 hor_ax = 'z'  # Horizontal axis. Only z or dens.
 sed = cfg.sed
 plot_obs = False
+bbl_h = cfg.bbl_h
 
 # drawn concentrations
 vax1 = [['T', 'S', 'O2'],
@@ -86,7 +87,7 @@ def plot_ax(axs, vax, colors_vax, ds, depth, plot_type):
             if plot_type == 'water':
                 axn.set_ylim(6, 0)  # ADJUST DEPTHS IF YOU CHANGE MODEL POINT
             elif plot_type == 'sediment':
-                axn.set_ylim(top=-10, bottom=10)
+                axn.set_ylim(top=-bbl_h, bottom=bbl_h)
 
             if plot_obs:
                 if av in variable_mapping.keys():
