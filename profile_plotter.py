@@ -113,8 +113,8 @@ def plot_profile(ax, ds, vax, colors, depth, plot_type, iday, obs_data):
         axn.axhspan(-0.5, depth.max(), color='dodgerblue', alpha=0.2)
         axn.set_ylim(top=0, bottom=depth.max())
     elif plot_type == 'sediment':
-        axn.axhspan(15, 0, color='sandybrown', alpha=0.3)
-        axn.axhspan(0, -10, color='dodgerblue', alpha=0.2)
+        axn.axhspan(bbl_h, 0, color='sandybrown', alpha=0.3)
+        axn.axhspan(0, -bbl_h, color='dodgerblue', alpha=0.2)
         axn.set_ylim(top=-bbl_h, bottom=bbl_h)
 
 
