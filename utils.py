@@ -1,4 +1,5 @@
 import os
+import json
 from tkinter.filedialog import askopenfilename
 
 def get_fname(msg):
@@ -43,3 +44,9 @@ def read_all_vars(ds):
     l = [x for x in l if "fick:" not in x]
     l = [x for x in l if x not in ["z", "z2", "time", "Ux"]]
     return l
+
+
+def load_config(filename):
+    with open(filename, 'r') as file:
+        config = json.load(file)
+    return config

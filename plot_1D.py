@@ -81,7 +81,7 @@ def depth_timeseries(ds, names, levs, colors, offset=0):
     for i, name in enumerate(names):
         v = ds[name].values[:,levs[i],cfg.icol_C] # mmol/m3
         axs[i].plot(xs, v, c=colors[i], lw=1, label=name)
-        axs[i].set_title('%s, z = %.2f m' % (name, zs[levs[i]]))
+        axs[i].set_title('%s, z = %.3f m' % (name, zs[levs[i]]))
 
     plt.tight_layout()
     plt.savefig("time_change.png",dpi=300, bbox_inches='tight')

@@ -5,21 +5,26 @@ import z_time
 import transect
 import x_time
 import anim_transect
-import config as cfg
+# import config as cfg
 import utils
 from model_vs_obs import model_vs_obs
 from plot_1D import profiles, depth_timeseries
 from profile_plotter import conc_profiles
 
+
 fname = utils.get_fname('Model output')
 # read file with model output
 #fname = '../BS_br_out.nc' # utils.get_fname('Model output')#
-fname = '//wsl.localhost/Ubuntu-20.04/home/eya/cases/wchips/RT_br_out.nc'
+# fname = '//wsl.localhost/Ubuntu-20.04/home/eya/cases/wchips/RT_br_out.nc'
 
 ds = xr.open_dataset(fname)
 
-# varnames = cfg.varnames
-varnames = utils.read_all_vars(ds)
+# TODO: move to the modules
+cfg = utils.load_config('config.json')
+
+varnames = cfg["variable_sets"]["brom_state"]
+# varnames = utils.read_all_vars(ds)
+
 #---------------------------------------------------------------
 # VERTICAL PROFILES MODEL VS OBSERVATIONS
 #---------------------------------------------------------------
@@ -64,13 +69,15 @@ varnames = utils.read_all_vars(ds)
 # x-time map (dataset, picname, varnames, z-level, nrows, ncols)
 # x_time.fig_map(ds, 'xtime-oxy', varnames, 0, 3, 2)
 
-# plot 1D
-# profiles(ds)
-# depth_timeseries(ds, ["O2", "O2", "NH4", "DOML"],
+# # plot 1D
+# # profiles(ds)
+# # TODO: remove reading of variables here
+# depth_timeseries(ds, cfg["variable_sets"]["depth_timeseries"],
 #                  [cfg.sed, cfg.sed+1, cfg.sed, 20],
 #                  ['b', 'g', 'r', 'y'],
 #                  offset=91)  # adjust years here
 
 # profiles
-for iday in cfg.pidays:
+# TODO: remove idays from here and make a loop in the module?
+for iday in cfg["profile_plotter"]["idays"]:
     conc_profiles(ds, iday)

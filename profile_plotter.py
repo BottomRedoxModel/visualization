@@ -3,62 +3,30 @@ import xarray as xr
 import matplotlib.pyplot as plt
 import gsw
 import pandas as pd
-import config as cfg
+# import config as cfg
+import utils
 
-icol = cfg.picol
-hor_ax = cfg.hor_ax  # Horizontal axis. Only z or dens.
-sed = cfg.sed
-sed2 = cfg.sed2
-plot_obs = cfg.plot_obs
-bbl_h = cfg.bbl_h
+cfg = utils.load_config('config.json')
+
+icol = cfg["profile_plotter"]["icol"]
+vert_ax = cfg["profile_plotter"]["vertical_ax"] # Horizontal axis. Only z or dens.
+plot_obs = cfg["profile_plotter"]["plot_observations"]
+
+sed = cfg["case_specific"]["sed"]
+sed2 = cfg["case_specific"]["sed2"]
+bbl_h = cfg["case_specific"]["bbl_h_cm"]
+
 
 obs_files = {}
 
 # drawn concentrations
-var = [
-        ['T', 'S', 'O2'],
-        ['H2S', 'S2O3', 'S0'],
-        ['NO2', 'NO3', 'NH4'],
-        ['Mn4', 'Mn3', 'Mn2'],
-        ['Fe3', 'Fe2'],
-
-        ['Phy', 'Het'],
-        ['Baae', 'Bhae', 'Baan', 'Bhan'],
-        ['DOML', 'DOMR', 'POML', 'POMR'],
-        ['PO4', 'Si', 'CH4'],
-        ['pH', 'Alk', 'DIC']
-    ]
+var = cfg["profile_plotter"]['var']
 
 # drawn concentration colors
-colors_vax = [
-        ['#377eb8', '#e41a1c', '#4daf4a'],
-        ['#984ea3', '#a65628', '#e6ab02'],
-        ['#377eb8', '#e41a1c', '#f781bf'],
-        ['#377eb8', '#4daf4a', '#984ea3'],
-        ['#a65628', '#f781bf'],
-
-        ['#4daf4a', '#ff7f00'],
-        ['#377eb8', '#4daf4a', '#984ea3', '#e6ab02'],
-        ['#a65628', '#f781bf', '#e41a1c', '#377eb8'],
-        ['#4daf4a', '#984ea3', '#ff7f00'],
-        ['#e6ab02', '#a65628', '#f781bf'],
-      ]
+colors_vax = cfg["profile_plotter"]['colors_vax']
 
 # {model: obs}
-variable_mapping = {"NO3": "NO3 uM",
-                    "NO2": "NO2 uM",
-                    "NH4": "NH4 uM",
-                    "PO4": "PO4 uM",
-                    "Si": "SI uM",
-                    "S": "Salinity",
-                    "pH": "pH",
-                    "Mn2": "Mn uM",
-                    "Fe2": "Fe uM",
-                    "H2S": "H2S uM",
-                    "SO4": "SO4 uM",
-                    "DIC": "tCO2 uM",
-                    "O2": "O2 (µM)",
-                    "T": "T"}
+model_obs_mapping = cfg["profile_plotter"]['model_obs_mapping']
 
 def load_obs_data(plot_obs, obs_files):
     if plot_obs:
@@ -66,16 +34,16 @@ def load_obs_data(plot_obs, obs_files):
         return obs_data
     return None
 
-def get_depth(ds, hor_ax, sed, iday):
-    if hor_ax == 'z':
+def get_depth(ds, vert_ax, sed, iday):
+    if vert_ax == 'z':
         return ds['z']
-    elif hor_ax == 'dens':
+    elif vert_ax == 'dens':
         P = ds['z'] - 10.1325
         SA = gsw.SA_from_SP(ds['S'].isel(time=iday), P, 42, 30.5)
         CT = gsw.CT_from_t(SA, ds['T'].isel(time=iday), P)
         return gsw.density.sigma0(SA, CT)
     else:
-        raise ValueError('Variable hor_ax is incorrect. Check it please.')
+        raise ValueError('Variable vert_ax is incorrect. Check it please.')
 
 
 def configure_ax(axn, av, ac, shift):
@@ -100,8 +68,8 @@ def plot_profile(ax, ds, vax, colors, depth, plot_type, iday, obs_data):
             axn.plot(var[sed2:], depth[sed2:], zorder=5, color=ac, lw=1.5)
 
         # Add observations if needed
-        if obs_data and av in variable_mapping:
-            obs_name = variable_mapping[av]
+        if obs_data and av in model_obs_mapping:
+            obs_name = model_obs_mapping[av]
             obsv = obs_data[f'{plot_type}_{av}'][[obs_name, 'depth']]
             axn.scatter(obsv[obs_name], obsv['depth'], c=ac, s=10, marker='x', label=av)
 
@@ -119,10 +87,13 @@ def plot_profile(ax, ds, vax, colors, depth, plot_type, iday, obs_data):
 
 
 def conc_profiles(ds, iday):
-    depth = get_depth(ds, hor_ax, sed, iday)
+    depth = get_depth(ds, vert_ax, sed, iday)
     depth_sed = ((depth - depth[sed]) * 100)
 
-    fig, axs = plt.subplots(2, 10, figsize=(25, 10), gridspec_kw={'hspace': 0.8, 'wspace': 0.32})
+    nvar = len(var)
+    fig, axs = plt.subplots(2, nvar,
+                            figsize=(nvar*2.5, 10),
+                            gridspec_kw={'hspace': 0.8, 'wspace': 0.32})
     obs_data = load_obs_data(plot_obs, obs_files)
 
     for i, (vax, colors) in enumerate(zip(var, colors_vax)):

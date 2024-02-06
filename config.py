@@ -1,19 +1,7 @@
 import my_cmaps as mcm
 import colormaps as cmaps
 
-# sets of variables to plot
-oxy_varnames = ['Oxy', 'Phy', 'Het', 'POM', 'DOM', 'NUT',]
-carb_varnames = ['DIC', 'Alk','CaCO3',  'pH',  'Om_Ar','CaCO3_form', 'pCO2', 'CO3','CaCO3_diss',]
-brom_state_variables = ["Phy", "Het", "POML", "POMR", "DOML", "DOMR",
-                        "O2", "NH4", "NO2", "NO3", "PO4", "Si",
-                        "Baae", "Bhae", "Baan", "Bhan", "Fe2", "Fe3",
-                        "FeS", "FeCO3", "FeS2", "Fe3PO42", "PO4_Fe3", "Mn2",
-                        "Mn3", "Mn4", "MnS", "MnCO3", "PO4_Mn3","H2S",
-                        "S0", "S2O3", "SO4", "Sipart", "DIC", "Alk",
-                        "pH", "T", "S", "LimLight", "LimT", "LimN"]
 
-# what we will actually plot
-varnames = oxy_varnames
 site = 1 #case 1=Norskehavet, 2=Black Sea; 3=Oslofjord
 if site==1:
 # vertical layers numbers for SWI (sed) and upper boundary of BBL (sed2)
@@ -34,6 +22,7 @@ if site==2:
     t2_1yr = '2027-12-31' #'2021-01-01'
 # thickness of BBL and sediments for plotting (in cm)
     bbl_h = 10 #10
+
 # column for baseline (icol_0) and injection (icol_C)
 icol_0 = 0  # baseline column
 icol_C = 0
@@ -67,17 +56,12 @@ mod_tstep = 24  # in model steps
 # profiles (EYA version)
 tprof = 22222  #22222 #222 #888
 
-# vertical (OLD MATWEY, without sediments)
-# !!! OBS: FISA will fix it later !!!
-vidays = [6935,6966,6995,7026,7056,7086,7117,7147,7178,7219,7249,7280]   # days numbers to plot vert. distr.
-vicol = 0
-hor_ax = 'z'  # Vertical axis. Only z or dens.
 
 # concentrations profiles with sediments (MATWEY)
-pidays = [365,  6935,6966,6995,7026,7056,7086,7117,7147,7178,7219,7249,7280]
+pidays = [365,]  #6935,6966,6995,7026,7056,7086,7117,7147,7178,7219,7249,7280]
 picol = 0
 plot_obs = False
-
+hor_ax = 'z'  # Vertical axis. Only z or dens.
 #----------------------------------------------------------------------
 
 units_dict = {'$°C$': ['T'],
