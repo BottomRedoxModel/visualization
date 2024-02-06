@@ -7,6 +7,7 @@
             "DIC", "Alk", "CaCO3", "pH", "Om_Ar", "CaCO3_form", "pCO2", "CO3", "CaCO3_diss"
         ],
         "brom_state": [
+            "Waste", "waste_decomp", "waste_diss", "waste_miner",
             "Phy", "Het", "POML", "POMR", "DOML", "DOMR",
             "O2", "NH4", "NO2", "NO3", "PO4", "Si",
             "Baae", "Bhae", "Baan", "Bhan", "Fe2", "Fe3",
@@ -23,7 +24,7 @@
     "case_specific": {
         "sed": 45,
         "sed2": 41,
-        "bbl_h_cm": 20
+        "bbl_h": 20
     },
 
     "plot_1D": {
@@ -59,7 +60,8 @@
     "model_vs_observations": {
         "t1": null,
         "t2": null,
-        "model_tstep": 24
+        "model_tstep": 24,
+        "icol": 0
     },
     
     "profile_plotter": {

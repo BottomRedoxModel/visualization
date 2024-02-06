@@ -14,7 +14,7 @@ plot_obs = cfg["profile_plotter"]["plot_observations"]
 
 sed = cfg["case_specific"]["sed"]
 sed2 = cfg["case_specific"]["sed2"]
-bbl_h = cfg["case_specific"]["bbl_h_cm"]
+bbl_h = cfg["case_specific"]["bbl_h"]
 
 
 obs_files = {}

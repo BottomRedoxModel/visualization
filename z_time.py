@@ -4,14 +4,17 @@ from matplotlib import ticker
 import matplotlib.dates as mdates
 import config as cfg
 import grid_maker as gm
+import utils
+import my_cmaps as mcm
 
-sed = cfg.sed
-sed2 = cfg.sed2
-t1 = cfg.t1_ztime
-t2 = cfg.t2_ztime
-bbl_h = cfg.bbl_h
+cfg = utils.load_config('config.json')
 
-yspace = cfg.yspace
+sed = cfg["case_specific"]["sed"]
+sed2 = cfg["case_specific"]["sed2"]
+bbl_h = cfg["case_specific"]["bbl_h"]
+t1 = cfg["z-time"]["t1"]
+t2 = cfg["z-time"]["t2"]
+yspace = cfg["z-time"]["yspace"]
 
 
 def plot_param(ds, name, x, y, y_sed, axis,axis_cb,axis_sed,axis_cb_sed):
@@ -27,8 +30,8 @@ def plot_param(ds, name, x, y, y_sed, axis,axis_cb,axis_sed,axis_cb_sed):
 
     X,Y = np.meshgrid(x,y[:sed2])
     X_sed,Y_sed = np.meshgrid(x,y_sed[sed2:])
-    if name in cfg.cmap_dict.keys():
-        cmap = cfg.cmap_dict[name]
+    if name in mcm.cmap_dict.keys():
+        cmap = mcm.cmap_dict[name]
     else:
         cmap = 'turbo'
 
@@ -73,7 +76,7 @@ def plot_param(ds, name, x, y, y_sed, axis,axis_cb,axis_sed,axis_cb_sed):
     title = '%s, $\mu M$' % name
 
     # TODO: check how to simplify this
-    for unit, vnames in cfg.units_dict.items():
+    for unit, vnames in cfg["units"].items():
         if name in vnames:
             title = name + ', ' + unit
             break

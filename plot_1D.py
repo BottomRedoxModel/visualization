@@ -3,9 +3,11 @@ from tkinter.filedialog import askopenfilename
 import os
 import pandas as pd
 import numpy as np
-import config as cfg
+# import config as cfg
 from datetime import datetime, timedelta
+import utils
 
+cfg = utils.load_config('config.json')
 
 def profiles(ds):
     '''
@@ -72,14 +74,14 @@ def depth_timeseries(ds, names, levs, colors, offset=0):
     :return:
     '''
 
-    ds = ds.sel(time=slice(cfg.t1_ztime, cfg.t2_ztime))
+    ds = ds.sel(time=slice(cfg["z-time"]["t1"], cfg["z-time"]["t2"]))
     xs = ds['time'].to_index() - timedelta(days = offset*365)  # doesn't include leap years :(
     zs = ds['z'].values
 
     fig, axs = plt.subplots(len(names), 1, figsize=(8, len(names)*1.5))
 
     for i, name in enumerate(names):
-        v = ds[name].values[:,levs[i],cfg.icol_C] # mmol/m3
+        v = ds[name].values[:,levs[i],cfg["plot_1D"]["icol_injection"]]  # mmol/m3
         axs[i].plot(xs, v, c=colors[i], lw=1, label=name)
         axs[i].set_title('%s, z = %.3f m' % (name, zs[levs[i]]))
 

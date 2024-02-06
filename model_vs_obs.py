@@ -4,14 +4,14 @@ from tkinter.filedialog import askopenfilename
 import os
 import pandas as pd
 import numpy as np
-import config as cfg
+# import config as cfg
 import utils
 import seaborn as sns
 
 '''
 Now this module is adapted for data from AquaMonitor
-Need to make it more general
 '''
+# TODO: Need to make it more general
 
 # pairs of plotted variables
 # {'obs': 'model_var'} or
@@ -23,12 +23,16 @@ pairs = {'O2 uM': 'O2',
          'NO3 uM': 'NO3',
           }
 
+cfg = utils.load_config('config.json')
+sed = cfg["case_specific"]["sed"]
+sed2 = cfg["case_specific"]["sed2"]
+
 # not sure if it is the best solution
 # maybe make them datetime directly in config?
-datemin = cfg.t1_mod_vs_obs  # start
-datemax = cfg.t2_mod_vs_obs  # stop
-dstep = cfg.mod_tstep  # Nth days
-icol = 0
+datemin = cfg["model_vs_observations"]["t1"]  # start
+datemax = cfg["model_vs_observations"]["t1"]   # stop
+dstep = cfg["model_vs_observations"]["model_tstep"]
+icol = cfg["model_vs_observations"]["icol"]
 
 wdepth_name = 'depth m'
 seddepth_name = 'depth cm'
@@ -54,7 +58,7 @@ def model_vs_obs(ds, name_obs, plot_sed=True):
     
     # read model depthes
     zs = ds['z'].values
-    zsed = ((zs - zs[cfg.sed])*100)
+    zsed = ((zs - zs[sed])*100)
 
     # figure
     # TODO: make the size automatically depending on nrows,ncols
@@ -84,8 +88,8 @@ def model_vs_obs(ds, name_obs, plot_sed=True):
         axw.set_ylim(top=-0.5)
 
         # model curves
-        axw.plot(md_summer[::dstep,:cfg.sed].T, zs[:cfg.sed], color='coral', alpha=0.3)
-        axw.plot(md_winter[::dstep,:cfg.sed].T, zs[:cfg.sed], color='royalblue', alpha=0.3)
+        axw.plot(md_summer[::dstep,:sed].T, zs[:sed], color='coral', alpha=0.3)
+        axw.plot(md_winter[::dstep,:sed].T, zs[:sed], color='royalblue', alpha=0.3)
 
         # observations
         if k in list(wat.columns):
@@ -105,8 +109,8 @@ def model_vs_obs(ds, name_obs, plot_sed=True):
             axsed.axhspan(0,-10, color='dodgerblue', alpha=0.2)
 
             # model curves
-            axsed.plot(md_summer[::dstep,cfg.sed2:].T, zsed[cfg.sed2:], color='coral', alpha=0.3)
-            axsed.plot(md_winter[::dstep,cfg.sed2:].T, zsed[cfg.sed2:], color='royalblue', alpha=0.3)
+            axsed.plot(md_summer[::dstep,sed2:].T, zsed[sed2:], color='coral', alpha=0.3)
+            axsed.plot(md_winter[::dstep,sed2:].T, zsed[sed2:], color='royalblue', alpha=0.3)
 
             # observations
             if k in list(sed.columns):

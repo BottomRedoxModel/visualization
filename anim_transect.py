@@ -3,13 +3,16 @@ import numpy as np
 from matplotlib import ticker
 from PIL import Image
 import glob
-import config as cfg
+# import config as cfg
 import grid_maker as gm
+import utils
+import my_cmaps as mcm
 
+cfg = utils.load_config('config.json')
 
-sed = cfg.sed
-sed2 = cfg.sed2
-tstep = cfg.anim_tstep
+sed = cfg["case_specific"]["sed"]
+sed2 = cfg["case_specific"]["sed2"]
+tstep = cfg["animation"]["tstep"]
 
 
 def plot_param(ds, name, lims_dict, sed_lims_dict, x, y, y_sed, axis,axis_cb,axis_sed,axis_cb_sed):
@@ -25,8 +28,8 @@ def plot_param(ds, name, lims_dict, sed_lims_dict, x, y, y_sed, axis,axis_cb,axi
 
     X,Y = np.meshgrid(x,y[:sed2])
     X_sed,Y_sed = np.meshgrid(x,y_sed[sed2:])
-    if name in cfg.cmap_dict.keys():
-        cmap = cfg.cmap_dict[name]
+    if name in mcm.cmap_dict.keys():
+        cmap = mcm.cmap_dict[name]
     else:
         cmap = 'turbo'
 
@@ -62,7 +65,7 @@ def plot_param(ds, name, lims_dict, sed_lims_dict, x, y, y_sed, axis,axis_cb,axi
     title = '%s, $\mu M$' % name
 
     # TODO: check how to simplify this
-    for unit, vnames in cfg.units_dict.items():
+    for unit, vnames in cfg["units"].items():
         if name in vnames:
             title = name + ', ' + unit
             break
