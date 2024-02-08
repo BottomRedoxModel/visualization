@@ -103,4 +103,4 @@ def fig_ztime(ds, picname, varnames, icol, nrows, ncols):
         else:
             plot_param(ds, varnames[i], xs, y2s, y_sed, axes[i], axes_cb[i], axes_sed[i], axes_sed_cb[i])
 
-    plt.savefig(picname + '.png', bbox_inches='tight', dpi=300)
+    plt.savefig('%s_%i.png' % (picname, icol), bbox_inches='tight', dpi=300)
