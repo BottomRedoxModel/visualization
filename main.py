@@ -37,9 +37,11 @@ varnames = cfg["variable_sets"]["brom_state"]
 # # time period (dataset, picname, varnames, nrows, ncols)
 # # z_time.fig_ztime(ds, 'ztime-oxy', varnames, cfg.icol_0, 2, 3)
 z_time.fig_ztime(ds, 'ztime-BROM-all-yrs', varnames, cfg["plot_1D"]["icol_base"], 8, 6)
+z_time.fig_ztime(ds, 'ztime-BROM-all-yrs', varnames, cfg["plot_1D"]["icol_injection"], 8, 6)
 #
 # # 1 year (dataset, picname, varnames, nrows, ncols)
 one_yr.fig_ztime(ds, 'ztime-brom-waste-1yr', varnames, cfg["plot_1D"]["icol_base"], 8, 6)
+one_yr.fig_ztime(ds, 'ztime-brom-waste-1yr_i', varnames, cfg["plot_1D"]["icol_injection"], 8, 6)
 #
 #     one_yr.fig_ztime(ds, 'ztime-BROM-1yr_1p', varnames[:48], cfg.icol_0, 8, 6)
 #     one_yr.fig_ztime(ds, 'ztime-BROM-1yr_2p', varnames[48:96], cfg.icol_0, 8, 6)
@@ -49,9 +51,8 @@ one_yr.fig_ztime(ds, 'ztime-brom-waste-1yr', varnames, cfg["plot_1D"]["icol_base
 #TRANSECTS
 #---------------------------------------------------------------
 # transect snapshot (dataset, picname, varnames, day, nrows, ncols)
-# transect.fig_transect(ds, 'transect-2015', varnames, '2014-10-15 00:00:00', 2, 3)
-# transect.fig_transect_depth(ds, 'transect-depth', varnames, '2014-10-15 00:00:00', cfg.transect_lev, 2, 3)
-
+transect.fig_transect(ds, 'transect-2015', varnames, '2012-04-15 00:00:00', 8, 6)
+transect.fig_transect_depth(ds, 'transect-depth', varnames, '2012-04-15 00:00:00', cfg["transect"]["ilev_1D"], 8, 6)
 # for iday in cfg.vidays:
 #     vert(ds, iday, cfg.vicol)
 
@@ -65,9 +66,11 @@ one_yr.fig_ztime(ds, 'ztime-brom-waste-1yr', varnames, cfg["plot_1D"]["icol_base
 # MAPS
 #---------------------------------------------------------------
 # x-time map (dataset, picname, varnames, z-level, nrows, ncols)
-# x_time.fig_map(ds, 'xtime-oxy', varnames, 0, 3, 2)
+x_time.fig_map(ds, 'xtime-oxy', varnames, 44, 8, 6)
 
-# # plot 1D
+#---------------------------------------------------------------
+# plot 1D
+#---------------------------------------------------------------
 # # profiles(ds)
 # # TODO: remove reading of variables here
 depth_timeseries(ds, cfg["variable_sets"]["depth_timeseries"],
@@ -76,7 +79,7 @@ depth_timeseries(ds, cfg["variable_sets"]["depth_timeseries"],
                   cfg["case_specific"]["sed"],
                   20],
                  ['b', 'g', 'r', 'y'],
-                 offset=91)  # adjust years here
+                 offset=91) # adjust years here
 
 # profiles
 # TODO: remove idays from here and make a loop in the module?

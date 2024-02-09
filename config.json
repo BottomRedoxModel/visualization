@@ -17,7 +17,7 @@
             "pH", "T", "S", "LimLight", "LimT", "LimN"
         ],
         "depth_timeseries": [
-            "O2", "O2", "NH4", "DOML"
+            "Waste", "O2", "NO3", "NH4"
         ]
     },
 
@@ -29,7 +29,7 @@
 
     "plot_1D": {
         "icol_base": 0,
-        "icol_injection": 0
+        "icol_injection": 18
     },
     
     "z-time": {
@@ -39,8 +39,8 @@
     },
     
     "1yr": {
-        "t1": "2020-01-01",
-        "t2": "2021-01-01"
+        "t1": "2012-01-01",
+        "t2": "2013-01-01"
     },
     
     "transect": {
@@ -65,8 +65,8 @@
     },
     
     "profile_plotter": {
-        "idays": [365],
-        "icol": 0,
+        "idays": [365,407,437,478,508,539,569,600,630,661,691,722],
+        "icol": 18,
         "plot_observations": false,
         "vertical_ax": "z",
 
