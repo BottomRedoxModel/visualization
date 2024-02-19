@@ -81,6 +81,8 @@ depth_timeseries(ds, cfg["variable_sets"]["depth_timeseries"],
                  ['b', 'g', 'r', 'y'],
                  offset=91) # adjust years here
 
+# test
+
 # profiles
 # TODO: remove idays from here and make a loop in the module?
 for iday in cfg["profile_plotter"]["idays"]:
