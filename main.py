@@ -18,6 +18,7 @@ fname = utils.get_fname('Model output')
 # fname = '//wsl.localhost/Ubuntu-20.04/home/eya/cases/wchips/RT_br_out.nc'
 
 ds = xr.open_dataset(fname)
+ds = ds.rename({'Waste': 'Biomass'})
 
 # TODO: move to the modules
 cfg = utils.load_config('config.json')
@@ -79,9 +80,7 @@ depth_timeseries(ds, cfg["variable_sets"]["depth_timeseries"],
                   cfg["case_specific"]["sed"],
                   20],
                  ['b', 'g', 'r', 'y'],
-                 offset=91) # adjust years here
-
-# test
+                 offset=0) #91) # adjust years here
 
 # profiles
 # TODO: remove idays from here and make a loop in the module?
