@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib import ticker
+from matplotlib.ticker import FuncFormatter, MaxNLocator
 import matplotlib.dates as mdates
 import config as cfg
 import grid_maker as gm
@@ -16,6 +16,14 @@ t1 = cfg["z-time"]["t1"]
 t2 = cfg["z-time"]["t2"]
 yspace = cfg["z-time"]["yspace"]
 
+
+# Define a custom formatter to display the label only every N-th year
+def custom_formatter(x, pos):
+    label = mdates.num2date(x).year
+    if label % yspace == 0:
+        return str(label)
+    else:
+        return ''
 
 def plot_param(ds, name, x, y, y_sed, axis,axis_cb,axis_sed,axis_cb_sed):
 
@@ -45,13 +53,13 @@ def plot_param(ds, name, x, y, y_sed, axis,axis_cb,axis_sed,axis_cb_sed):
         cmap = 'plasma'
     CS_1 = axis.contourf(X, Y, var[:, :sed2].T, levels=levels, cmap=cmap)
 
-    locw = ticker.MaxNLocator(nbins=2, steps=[2, 3, 5, 10])
+    locw = MaxNLocator(nbins=2, steps=[2, 3, 5, 10])
 
     cb = plt.colorbar(CS_1,cax = axis_cb)
     cb.ax.yaxis.set_major_locator(locw)
 
     cb_sed = plt.colorbar(CS_1_sed,cax = axis_cb_sed)
-    locs = ticker.MaxNLocator(nbins=2, steps=[2, 3, 5, 10])
+    locs = MaxNLocator(nbins=2, steps=[2, 3, 5, 10])
     cb_sed.ax.yaxis.set_major_locator(locs)
 
     axis.set_ylim(np.max(y[:sed2]),0)
@@ -62,13 +70,16 @@ def plot_param(ds, name, x, y, y_sed, axis,axis_cb,axis_sed,axis_cb_sed):
     axis.tick_params(axis='y', pad = 0.01)
     axis_sed.tick_params(axis='y', pad = 1)
 
-    years = mdates.YearLocator(yspace)  # every Xth year
-    years_fmt = mdates.DateFormatter('%Y')
+    # Set x-axis major ticks to occur every year
+    axis.xaxis.set_major_locator(mdates.YearLocator())
+    axis_sed.xaxis.set_major_locator(mdates.YearLocator())
 
-    axis.xaxis.set_major_locator(years)
-    axis.xaxis.set_major_formatter(years_fmt)
-    axis_sed.xaxis.set_major_locator(years)
-    axis_sed.xaxis.set_major_formatter(years_fmt)
+    axis.xaxis.set_major_formatter(FuncFormatter(custom_formatter))
+    axis_sed.xaxis.set_major_formatter(FuncFormatter(custom_formatter))
+
+    # years_fmt = mdates.DateFormatter('%Y')
+    # axis.xaxis.set_major_formatter(years_fmt)
+    # axis_sed.xaxis.set_major_formatter(years_fmt)
 
     axis.format_xdata = mdates.DateFormatter('%Y-%m-%d')
     axis.set_xticklabels([])
