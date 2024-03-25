@@ -63,7 +63,7 @@ def profiles(ds):
     plt.savefig("vert_dist.png",dpi=300)
 
 
-def depth_timeseries(ds, names, levs, colors, offset=0):
+def depth_timeseries(ds, names, levs, colors, vert_axes, limits, fname, offset=0):
     '''
     Adapted from EYA
     temporal changes at depth levs
@@ -78,12 +78,18 @@ def depth_timeseries(ds, names, levs, colors, offset=0):
     xs = ds['time'].to_index() - timedelta(days = offset*365)  # doesn't include leap years :(
     zs = ds['z'].values
 
-    fig, axs = plt.subplots(len(names), 1, figsize=(8, len(names)*1.5))
+    fig, axs = plt.subplots(len(names), 1, figsize=(6, len(names)*1.2))
 
     for i, name in enumerate(names):
         v = ds[name].values[:,levs[i],cfg["plot_1D"]["icol_injection"]]  # mmol/m3
-        axs[i].plot(xs, v, c=colors[i], lw=1, label=name)
-        axs[i].set_title('%s, z = %.3f m' % (name, zs[levs[i]]))
+        axs[i].plot(xs, v, c=colors[i], lw=2, label=name)
+        # min, max
+        axs[i].set_ylim(limits[i][0], limits[i][1])
+
+        if vert_axes[i]:
+            axs[i].invert_yaxis()
+        axs[i].set_title('%s' % (name), fontsize=8)
+ #       axs[i].set_title('%s, z = %.3f m' % (name, zs[levs[i]]), fontsize=8)
 
     plt.tight_layout()
-    plt.savefig("time_change.png",dpi=300, bbox_inches='tight')
+    plt.savefig(fname + ".png",dpi=300, bbox_inches='tight')
