@@ -36,6 +36,12 @@
         ],
         "depth_timeseries_flux": [
             "Woodchip","O2","fick:O2","fick:DIC","fick:DOML"
+        ],
+        "compare_maps": [
+            "Woodchip","O2"
+        ],
+        "compare_transects": [
+            "Woodchip","O2"
         ]
     },
 
