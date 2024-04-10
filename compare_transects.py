@@ -31,24 +31,25 @@ def plot_param(ds, name, x, y, y_sed, axis,axis_cb,axis_sed,axis_cb_sed, lims_w,
     else:
         cmap = 'turbo'
 
-    if var[:, sed2:].shape[1] == len(Y_sed):
-        CS_1_sed = axis_sed.contourf(X_sed,Y_sed, var[:,sed2:].T, levels = sed_levels, cmap = cmap)
-    else:
-        CS_1_sed = axis_sed.contourf(X_sed, Y_sed, var[:, sed2+1:].T, levels=sed_levels, cmap=cmap)
+    CS_1_sed = axis_sed.contourf(X_sed,Y_sed, var[:,sed2:].T,
+                                 levels = sed_levels, cmap = cmap, extend='both')
 
     # TODO: fix it
     if name == 'Oxy':
         cmap = 'plasma'
-    CS_1 = axis.contourf(X, Y, var[:, :sed2].T, levels=levels, cmap=cmap)
+    CS_1 = axis.contourf(X, Y, var[:, :sed2].T,
+                         levels=levels, cmap=cmap)
 
     locw = ticker.MaxNLocator(nbins=2, steps=[2, 3, 5, 10])
 
-    cb = plt.colorbar(CS_1,cax = axis_cb)
+    cb = plt.colorbar(CS_1,cax = axis_cb, extend='both')
     cb.ax.yaxis.set_major_locator(locw)
+    cb.formatter.set_powerlimits((-4, 4))
 
-    cb_sed = plt.colorbar(CS_1_sed,cax = axis_cb_sed)
+    cb_sed = plt.colorbar(CS_1_sed,cax = axis_cb_sed, extend='both')
     locs = ticker.MaxNLocator(nbins=2, steps=[2, 3, 5, 10])
     cb_sed.ax.yaxis.set_major_locator(locs)
+    cb_sed.formatter.set_powerlimits((-4, 4))
 
     axis.set_ylim(np.max(y[:sed2]),0)
     axis_sed.set_ylim(5,-5)
@@ -86,9 +87,8 @@ def fig_transect_compare(dss, picname, varnames, t0, nrows, ncols, lims_w, lims_
         for i in range(ncols):
             plot_param(ds, varnames[i], xs, ys, y_sed,
                        axes[n], axes_cb[n], axes_sed[n], axes_sed_cb[n],
-                       lims_w, lims_sed)
+                       lims_w[i], lims_sed[i])
             title = '%s, $\mu M$' % varnames[i]
             axes[n].set_title(title)
             n+=1
-
     plt.savefig(picname + t0[:-9] + '.png', bbox_inches='tight', dpi=300)

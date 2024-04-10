@@ -1,12 +1,10 @@
 import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
 
-h = 0.4
-w = 0.1
 
-def create_gs22(gs, pos):
+def create_gs22(gs, pos, hspace=0.4, wspace=0.1):
     return gridspec.GridSpecFromSubplotSpec(2, 2, subplot_spec=gs[pos],
-                                            hspace=h,wspace=w,height_ratios=[3,2],
+                                            hspace=hspace,wspace=wspace,height_ratios=[3,2],
                                             width_ratios = [50,1])
 
 def create_gs32(gs, pos):

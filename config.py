@@ -2,7 +2,7 @@ import my_cmaps as mcm
 import colormaps as cmaps
 
 
-site = 1 #case 1=Norskehavet, 2=Black Sea; 3=Oslofjord
+site = 3 #case 1=Norskehavet, 2=Black Sea; 3=Oslofjord
 if site==1:
 # vertical layers numbers for SWI (sed) and upper boundary of BBL (sed2)
     sed  = 45 #45       # SWI
@@ -20,6 +20,21 @@ if site==2:
 # time period for ONE selected year or a selected SHORT period [YYYY-MM-DD]
     t1_1yr = '2027-01-01'# '2020-01-01'
     t2_1yr = '2027-12-31' #'2021-01-01'
+# thickness of BBL and sediments for plotting (in cm)
+    bbl_h = 10 #10
+
+if site==3:
+# vertical layers numbers for SWI (sed) and upper boundary of BBL (sed2)
+    sed  = 46       # SWI
+    sed2 = 42       # upper boundary of BBL
+# z-time (time period) [YYYY-MM-DD]  None: *from start* or *to end*
+#    t1_ztime = None
+#    t2_ztime = None
+# time period for ONE selected year or a selected SHORT period [YYYY-MM-DD]
+    t1_1yr = '2015-01-01'
+    t2_1yr = '2016-08-29'
+#    t1_1yr = '2020-01-01'
+#    t2_1yr = '2021-01-01'
 # thickness of BBL and sediments for plotting (in cm)
     bbl_h = 10 #10
 

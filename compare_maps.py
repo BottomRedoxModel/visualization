@@ -27,7 +27,7 @@ def plot_param(ds, name, x, y, axis, lims):
     CS_1 = axis.contourf(X, Y, var.T, levels=levels, cmap=cmap)
 
     tick_locator = ticker.MaxNLocator(nbins=4)
-    cb = plt.colorbar(CS_1, ax=axis)
+    cb = plt.colorbar(CS_1, ax=axis, extend='both')
     cb.formatter.set_powerlimits((-4, 4))
     cb.locator = tick_locator
     cb.update_ticks()
@@ -65,8 +65,6 @@ def fig_map_compare(dss, picname, varnames, zlev, nrows, ncols, lims):
                     break
             ax.set_title(title)
 
-        [fig.delaxes(axs.flatten()[j]) for j in np.arange(i+1,nrows*ncols)]
-
-        [axis.set_ylabel('x ,m') for axis in axs.flatten()]
+    [axis.set_ylabel('x ,m') for axis in axs.flatten()]
     fig.tight_layout()
     plt.savefig('%s_lev%i.png' % (picname, zlev))
