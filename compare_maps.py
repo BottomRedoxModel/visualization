@@ -1,3 +1,4 @@
+import constants
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -64,7 +65,7 @@ def fig_map_compare(dss, picname, varnames, zlev, nrows, ncols, lims):
             title = '%s, $\mu M$' % name
 
             # TODO: check how to simplify this
-            for unit, vnames in cfg["units"].items():
+            for unit, vnames in constants.UNITS.items():
                 if name in vnames:
                     title = name + ', ' + unit
                     break

@@ -1,3 +1,4 @@
+import constants
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import ticker
@@ -75,7 +76,7 @@ def plot_param(ds, name, x, y, y_sed, axis,axis_cb,axis_sed,axis_cb_sed):
     title = '%s, $\mu M$' % name
 
     # TODO: check how to simplify this
-    for unit, vnames in cfg["units"].items():
+    for unit, vnames in constants.UNITS.items():
         if name in vnames:
             title = name + ', ' + unit
             break

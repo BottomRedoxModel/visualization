@@ -17,7 +17,7 @@ def unit_conversion(df, mode='mass to moles'):
     :return:
     '''
     if mode == 'mass to moles':
-        df['O2 uM'] = df['Oksygen (ml/L)'] * 1000 / 22.391
+        df['O2 uM'] = df['Oxygen (ml/L)'] * 1000 / 22.391
         df['SiO2 uM'] = df['SiO2 (mg/l)'] * 1000 / 60.08
         df['PO4 uM'] = df['PO4-P (µg/l)'] / 94.97
         df['NO3 uM'] = df['NO3-N (µg/l)'] / 62
