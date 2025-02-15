@@ -1,12 +1,16 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import ticker
-import config as cfg
+# import config as cfg
 import grid_maker as gm
+import my_cmaps as mcm
+import utils
 
 
-sed = cfg.sed
-sed2 = cfg.sed2
+cfg = utils.load_config('config.json')
+
+sed = cfg["case_specific"]["sed"]
+sed2 = cfg["case_specific"]["sed2"]
 
 
 def plot_param(ds, name, x, y, y_sed, axis,axis_cb,axis_sed,axis_cb_sed):
@@ -22,8 +26,8 @@ def plot_param(ds, name, x, y, y_sed, axis,axis_cb,axis_sed,axis_cb_sed):
 
     X,Y = np.meshgrid(x,y[:sed2])
     X_sed,Y_sed = np.meshgrid(x,y_sed[sed2:])
-    if name in cfg.cmap_dict.keys():
-        cmap = cfg.cmap_dict[name]
+    if name in mcm.cmap_dict.keys():
+        cmap = mcm.cmap_dict[name]
     else:
         cmap = 'turbo'
 
@@ -56,15 +60,19 @@ def plot_param(ds, name, x, y, y_sed, axis,axis_cb,axis_sed,axis_cb_sed):
 
     axis.set_xticklabels([])
 
-    title = '%s, $\mu M$' % name
 
     # TODO: check how to simplify this
-    for unit, vnames in cfg.units_dict.items():
+    for unit, vnames in cfg["units"].items():
         if name in vnames:
             title = name + ', ' + unit
             break
 
-    axis.set_title(title)
+
+def plot_param_depth(ds, name, lev, x, ax):
+
+    var = ds[name].isel(z=lev)
+    ax.plot(x, var, c='k')
+    ax.set_xticklabels([])
 
 def fig_transect(ds, picname, varnames, t0, nrows, ncols):
 
@@ -76,14 +84,40 @@ def fig_transect(ds, picname, varnames, t0, nrows, ncols):
 
     nv = len(varnames)
 
-    fig, (axes, axes_cb, axes_sed, axes_sed_cb) = gm.get_fig_axes(nrows, ncols, nv)
+    fig, (axes, axes_cb, axes_sed, axes_sed_cb) = gm.get_fig_axes(nrows, ncols, nv, gstype='22')
 
     for i in np.arange(nv):
-        print(i,varnames[i])
         if varnames[i] != 'Kz':
             plot_param(ds, varnames[i], xs, ys, y_sed, axes[i], axes_cb[i], axes_sed[i], axes_sed_cb[i])
         else:
             plot_param(ds, varnames[i], xs, y2s, y_sed, axes[i], axes_cb[i], axes_sed[i], axes_sed_cb[i])
+        title = '%s, $\mu M$' % varnames[i]
+        axes[i].set_title(title)
 
+    # fig.suptitle(t0[:-9])
+    plt.savefig(picname + t0[:-9] + '.png', bbox_inches='tight', dpi=300)
+
+
+def fig_transect_depth(ds, picname, varnames, t0, lev, nrows, ncols):
+
+    ds = ds.sel(time=t0, method='nearest').squeeze()
+    xs = ds['i'].values
+    ys = ds['z'].values
+    y2s = ds['z2'].values
+    y_sed = ((ys - ys[sed]) * 100)
+
+    nv = len(varnames)
+
+    fig, (axes1d, axes, axes_cb, axes_sed, axes_sed_cb) = gm.get_fig_axes(nrows, ncols, nv, gstype='32')
+
+    for i in np.arange(nv):
+
+        if varnames[i] != 'Kz':
+            plot_param_depth(ds, varnames[i], lev, xs, axes1d[i])
+            plot_param(ds, varnames[i], xs, ys, y_sed, axes[i], axes_cb[i], axes_sed[i], axes_sed_cb[i])
+        else:
+            plot_param(ds, varnames[i], xs, y2s, y_sed, axes[i], axes_cb[i], axes_sed[i], axes_sed_cb[i])
+        title = '%s, $\mu M$' % varnames[i]
+        axes1d[i].set_title(title)
     # fig.suptitle(t0[:-9])
     plt.savefig(picname + t0[:-9] + '.png', bbox_inches='tight', dpi=300)

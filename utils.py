@@ -1,4 +1,5 @@
 import os
+import json
 from tkinter.filedialog import askopenfilename
 
 def get_fname(msg):
@@ -35,3 +36,17 @@ def identify_season(x):
 def make_season(df, datename):
     df['season'] = df[datename].dt.month.apply(identify_season)
     return df
+
+
+def read_all_vars(ds):
+    l = list(ds.keys())
+    l = [x for x in l if "sink:" not in x]
+    l = [x for x in l if "fick:" not in x]
+    l = [x for x in l if x not in ["z", "z2", "time", "Ux"]]
+    return l
+
+
+def load_config(filename):
+    with open(filename, 'r') as file:
+        config = json.load(file)
+    return config

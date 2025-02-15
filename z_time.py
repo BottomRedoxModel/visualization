@@ -1,18 +1,29 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib import ticker
+from matplotlib.ticker import FuncFormatter, MaxNLocator
 import matplotlib.dates as mdates
 import config as cfg
 import grid_maker as gm
+import utils
+import my_cmaps as mcm
 
-sed = cfg.sed
-sed2 = cfg.sed2
-t1 = cfg.t1_ztime
-t2 = cfg.t2_ztime
-bbl_h = cfg.bbl_h
+cfg = utils.load_config('config.json')
 
-yspace = cfg.yspace
+sed = cfg["case_specific"]["sed"]
+sed2 = cfg["case_specific"]["sed2"]
+bbl_h = cfg["case_specific"]["bbl_h"]
+t1 = cfg["z-time"]["t1"]
+t2 = cfg["z-time"]["t2"]
+yspace = cfg["z-time"]["yspace"]
 
+
+# Define a custom formatter to display the label only every N-th year
+def custom_formatter(x, pos):
+    label = mdates.num2date(x).year
+    if label % yspace == 0:
+        return str(label)
+    else:
+        return ''
 
 def plot_param(ds, name, x, y, y_sed, axis,axis_cb,axis_sed,axis_cb_sed):
 
@@ -27,10 +38,24 @@ def plot_param(ds, name, x, y, y_sed, axis,axis_cb,axis_sed,axis_cb_sed):
 
     X,Y = np.meshgrid(x,y[:sed2])
     X_sed,Y_sed = np.meshgrid(x,y_sed[sed2:])
-    if name in cfg.cmap_dict.keys():
-        cmap = cfg.cmap_dict[name]
+    if name in mcm.cmap_dict.keys():
+        cmap = mcm.cmap_dict[name]
     else:
         cmap = 'turbo'
+    #"Ci_tot_diss", "Ci_tot_hydrolysis",    "Ci_tot_part", "Ci_tot_photolysis",    "Ci_in_biota", "Ci_tot_biodegrad"
+    if name == 'Ci_tot_diss':
+        cmap = 'Purples'
+    if name == 'Ci_tot_part':
+        cmap = 'Blues'
+    if name == 'Ci_in_biota':
+        cmap = 'BuGn'
+    if name == 'Ci_tot_biodegrad':
+        cmap = 'YlGnBu'
+    if name == 'Ci_tot_photolysis':
+        cmap = 'Oranges'
+    if name == 'Ci_tot_hydrolysis':
+        cmap = 'GnBu'
+
 
     if var[:, sed2:].shape[1] == len(Y_sed):
         CS_1_sed = axis_sed.contourf(X_sed,Y_sed, var[:,sed2:].T, levels = sed_levels, cmap = cmap)
@@ -42,13 +67,13 @@ def plot_param(ds, name, x, y, y_sed, axis,axis_cb,axis_sed,axis_cb_sed):
         cmap = 'plasma'
     CS_1 = axis.contourf(X, Y, var[:, :sed2].T, levels=levels, cmap=cmap)
 
-    locw = ticker.MaxNLocator(nbins=2, steps=[2, 3, 5, 10])
+    locw = MaxNLocator(nbins=2, steps=[2, 3, 5, 10])
 
     cb = plt.colorbar(CS_1,cax = axis_cb)
     cb.ax.yaxis.set_major_locator(locw)
 
     cb_sed = plt.colorbar(CS_1_sed,cax = axis_cb_sed)
-    locs = ticker.MaxNLocator(nbins=2, steps=[2, 3, 5, 10])
+    locs = MaxNLocator(nbins=2, steps=[2, 3, 5, 10])
     cb_sed.ax.yaxis.set_major_locator(locs)
 
     axis.set_ylim(np.max(y[:sed2]),0)
@@ -59,13 +84,16 @@ def plot_param(ds, name, x, y, y_sed, axis,axis_cb,axis_sed,axis_cb_sed):
     axis.tick_params(axis='y', pad = 0.01)
     axis_sed.tick_params(axis='y', pad = 1)
 
-    years = mdates.YearLocator(yspace)  # every Xth year
-    years_fmt = mdates.DateFormatter('%Y')
+    # Set x-axis major ticks to occur every year
+    axis.xaxis.set_major_locator(mdates.YearLocator())
+    axis_sed.xaxis.set_major_locator(mdates.YearLocator())
 
-    axis.xaxis.set_major_locator(years)
-    axis.xaxis.set_major_formatter(years_fmt)
-    axis_sed.xaxis.set_major_locator(years)
-    axis_sed.xaxis.set_major_formatter(years_fmt)
+    axis.xaxis.set_major_formatter(FuncFormatter(custom_formatter))
+    axis_sed.xaxis.set_major_formatter(FuncFormatter(custom_formatter))
+
+    # years_fmt = mdates.DateFormatter('%Y')
+    # axis.xaxis.set_major_formatter(years_fmt)
+    # axis_sed.xaxis.set_major_formatter(years_fmt)
 
     axis.format_xdata = mdates.DateFormatter('%Y-%m-%d')
     axis.set_xticklabels([])
@@ -73,7 +101,7 @@ def plot_param(ds, name, x, y, y_sed, axis,axis_cb,axis_sed,axis_cb_sed):
     title = '%s, $\mu M$' % name
 
     # TODO: check how to simplify this
-    for unit, vnames in cfg.units_dict.items():
+    for unit, vnames in cfg["units"].items():
         if name in vnames:
             title = name + ', ' + unit
             break
@@ -83,7 +111,7 @@ def plot_param(ds, name, x, y, y_sed, axis,axis_cb,axis_sed,axis_cb_sed):
 def fig_ztime(ds, picname, varnames, icol, nrows, ncols):
     global gs
 
-    ds = ds.sel(time=slice(t1, t2)).isel(i=icol)
+    ds = ds.sel(time=slice(t1, '2034-12-31')).isel(i=icol)
     xs = ds['time'].values
     ys = ds['z'].values
     y2s = ds['z2'].values
@@ -100,4 +128,14 @@ def fig_ztime(ds, picname, varnames, icol, nrows, ncols):
         else:
             plot_param(ds, varnames[i], xs, y2s, y_sed, axes[i], axes_cb[i], axes_sed[i], axes_sed_cb[i])
 
-    plt.savefig(picname + '.png', bbox_inches='tight', dpi=300)
+# ------------------------------------------------------------
+    for ax in axes:
+        ax.axvline(np.datetime64("2015"), color="red", linestyle="--", linewidth=1)
+        ax.axvline(np.datetime64("2024"), color="red", linestyle="--", linewidth=1)
+
+    for ax_sed in axes_sed:
+        ax_sed.axvline(np.datetime64("2015"), color="red", linestyle="--", linewidth=1)
+        ax_sed.axvline(np.datetime64("2024"), color="red", linestyle="--", linewidth=1)
+
+#------------------------------------------------------------
+    plt.savefig('%s_%i.png' % (picname, icol), bbox_inches='tight', dpi=300)

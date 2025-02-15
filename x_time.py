@@ -3,11 +3,14 @@ import numpy as np
 
 from matplotlib import ticker
 import matplotlib.dates as mdates
-import config as cfg
+# import config as cfg
+import utils
+import my_cmaps as mcm
 
 h = 0.2
 w = 0.04
-yspace = cfg.yspace
+cfg = utils.load_config('config.json')
+yspace = cfg["z-time"]["yspace"]
 
 def plot_param(ds, name, x, y, axis):
 
@@ -18,8 +21,8 @@ def plot_param(ds, name, x, y, axis):
 
     X, Y = np.meshgrid(x, y)
 
-    if name in cfg.cmap_dict.keys():
-        cmap = cfg.cmap_dict[name]
+    if name in mcm.cmap_dict.keys():
+        cmap = mcm.cmap_dict[name]
     else:
         cmap = 'turbo'
     CS_1 = axis.contourf(X, Y, var.T, levels=levels, cmap=cmap)
@@ -56,7 +59,7 @@ def fig_map(ds, picname, varnames, zlev, nrows, ncols):
         title = '%s, $\mu M$' % name
 
         # TODO: check how to simplify this
-        for unit, vnames in cfg.units_dict.items():
+        for unit, vnames in cfg["units"].items():
             if name in vnames:
                 title = name + ', ' + unit
                 break

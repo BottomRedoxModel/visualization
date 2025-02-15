@@ -1,17 +1,23 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib import ticker
-from PIL import Image
-import glob
-import config as cfg
-import grid_maker as gm
+from matplotlib import ticker #to adjust numbers in the axis. steps etc
+from PIL import Image #PIL = python imaging library
+import glob #used to find files in a dictionary
+# import config as cfg
+import grid_maker as gm #FILE - makes grid
+import utils #FILE - utilities, helpful functions
+import my_cmaps as mcm #FILE - colormaps
 
 
-sed = cfg.sed
-sed2 = cfg.sed2
-tstep = cfg.anim_tstep
+#Configuration. Loads from a JSON file that includes specific settings for sediments and time steps
+cfg = utils.load_config('config.json') #importing load_function from utils - reading file
 
+#Getting specific values
+sed = cfg["case_specific"]["sed"] #getting values of sed from case_specific
+sed2 = cfg["case_specific"]["sed2"]
+tstep = cfg["animation"]["tstep"]
 
+#This function takes in data and parameters to make a contour plot for water and sediments.
 def plot_param(ds, name, lims_dict, sed_lims_dict, x, y, y_sed, axis,axis_cb,axis_sed,axis_cb_sed):
 
     var = ds[name].values.T
@@ -25,8 +31,8 @@ def plot_param(ds, name, lims_dict, sed_lims_dict, x, y, y_sed, axis,axis_cb,axi
 
     X,Y = np.meshgrid(x,y[:sed2])
     X_sed,Y_sed = np.meshgrid(x,y_sed[sed2:])
-    if name in cfg.cmap_dict.keys():
-        cmap = cfg.cmap_dict[name]
+    if name in mcm.cmap_dict.keys():
+        cmap = mcm.cmap_dict[name]
     else:
         cmap = 'turbo'
 
@@ -62,13 +68,14 @@ def plot_param(ds, name, lims_dict, sed_lims_dict, x, y, y_sed, axis,axis_cb,axi
     title = '%s, $\mu M$' % name
 
     # TODO: check how to simplify this
-    for unit, vnames in cfg.units_dict.items():
+    for unit, vnames in cfg["units"].items():
         if name in vnames:
             title = name + ', ' + unit
             break
 
     axis.set_title(title)
 
+#Function that sets the time interval, and for each steps is it generated a plot and saved as a picture (png).
 def anim_transect(ds, picname, varnames, t1, t2, nrows, ncols):
 
     ds = ds.sel(time=slice(t1, t2))
@@ -107,6 +114,7 @@ def anim_transect(ds, picname, varnames, t1, t2, nrows, ncols):
         print(str(dst['time'].values)[:18])
         plt.savefig(picname + str(dst['time'].values)[:13] + '.png', bbox_inches='tight', dpi=300)
 
+#Making gif animation
 def make_gif(frame_folder, gifname):
     frames = [Image.open(image) for image in sorted(glob.glob(f"{frame_folder}/*.png"))]
     frame_one = frames[0]

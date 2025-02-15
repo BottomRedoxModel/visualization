@@ -1,5 +1,6 @@
 from matplotlib import colors
 from matplotlib import cm
+import colormaps as cmaps
 
 mp_palette = ['#0d3b66', '#faf0ca', '#f4d35e', '#ee964b', 'crimson', 'darkred']
 mp = colors.LinearSegmentedColormap.from_list('mp_colormap', mp_palette, N=256)
@@ -28,3 +29,14 @@ ph_palette = ["#001427","#708d81", "#efe9ae", "#f3ffbd",
               "#f4d58d", "#ee964b", "#f35b04", "#bf0603", "#231942"]
 ph = colors.LinearSegmentedColormap.from_list('ph_colormap', ph_palette, N=256)
 # ph = 'turbo'
+
+cmap_dict = {'MP_free': mp, 'MP_biof': mp,
+             'MP_het': mp, 'MP_det': mp,
+             'MP_TOT': mp, 'MP_TOT_items': mp,
+             'Oxy': oxy, 'Phy': phy, 'Het': het,
+             'POM': pom, 'DOM': dom, 'NUT': cmaps.amp,
+             'T': 'RdYlBu_r', 'S': cmaps.haline,
+             'pH': cmaps.bilbao, 'pCO2': cmaps.lapaz_r,
+             'Om_Ar': cmaps.savanna_r, 'DIC': cmaps.tokyo_r,
+             'Alk': cmaps.buda_r, 'CO3': cmaps.turku_r,
+}
