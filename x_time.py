@@ -10,7 +10,7 @@ import my_cmaps as mcm
 
 h = 0.2
 w = 0.04
-cfg = utils.load_config('config.json')
+cfg = utils.load_config('config.yaml')
 yspace = cfg["z-time"]["yspace"]
 
 def plot_param(ds, name, x, y, axis):

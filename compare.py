@@ -7,7 +7,7 @@ import compare_transects #FILE
 
 # TODO: move to the modules
 #Loading configuration file
-cfg = utils.load_config('config.json')
+cfg = utils.load_config('config.yaml')
 
 #Defining codes for dataset. Lists with file paths to the datasets
 ds_codes = ['DS1', 'DS2', 'DS3']
@@ -35,7 +35,7 @@ compare_maps.fig_map_compare(datasets_to_compare, 'maps_compared',
 #compare transect - makes a figure to comparing transects (vertical profiles of data)
 # (dss, picname, varnames, t0, lims)
 compare_transects.fig_transect_compare(datasets_to_compare, 'transects_compared',
-                             cfg['variable_sets']['compare_transects'], '2012-04-15 00:00:00', #the variables that will be compared (from config.json)
+                             cfg['variable_sets']['compare_transects'], '2012-04-15 00:00:00', #the variables that will be compared (from config.yaml)
                              3, 2, #3 rows, 2 columns
                              ([0, 5e-5], [180, 350]),    # limits WATER COLUMN
                              ([0, 1e5], [0, 200]) )     # limits SEDIMENT

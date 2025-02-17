@@ -1,5 +1,6 @@
 import os
 import json
+from yaml import safe_load
 from tkinter.filedialog import askopenfilename
 
 def get_fname(msg):
@@ -47,6 +48,9 @@ def read_all_vars(ds):
 
 
 def load_config(filename):
-    with open(filename, 'r') as file:
-        config = json.load(file)
+    # deprecated option
+    # with open(filename, 'r') as file:
+    #     config = json.load(file)
+    with open(filename, "r") as yamlfile:
+        config = safe_load(yamlfile)
     return config

@@ -33,7 +33,7 @@ ds['z'] = ds['z']
 #ds = ds.rename({'Waste': 'Woodchip'}).isel(time=slice(1,None))
 
 # TODO: move to the modules
-cfg = utils.load_config('config.json')
+cfg = utils.load_config('config.yaml')
 
 varnames = cfg["variable_sets"]["brom_state"]
 varnames_all = utils.read_all_vars(ds)

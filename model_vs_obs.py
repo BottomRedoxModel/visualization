@@ -23,7 +23,7 @@ pairs = {'O2 uM': 'O2',
          'NO3 uM': 'NO3',
           }
 
-cfg = utils.load_config('config.json')
+cfg = utils.load_config('config.yaml')
 sed = cfg["case_specific"]["sed"]
 sed2 = cfg["case_specific"]["sed2"]
 

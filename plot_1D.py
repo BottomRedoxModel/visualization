@@ -7,7 +7,7 @@ import numpy as np
 from datetime import datetime, timedelta
 import utils
 
-cfg = utils.load_config('config.json')
+cfg = utils.load_config('config.yaml')
 
 def profiles(ds):
     '''

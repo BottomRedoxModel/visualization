@@ -9,7 +9,7 @@ import my_cmaps as mcm #color maps
 
 h = 0.2 #height figure
 w = 0.04 #width figure
-cfg = utils.load_config('config.json') #load configs from a file
+cfg = utils.load_config('config.yaml') #load configs from a file
 yspace = cfg["z-time"]["yspace"] #how often the year will be shown on x-axis
 
 #Making a plot with:

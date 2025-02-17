@@ -11,7 +11,7 @@ import my_cmaps as mcm #FILE - colormaps
 
 
 #Configuration. Loads from a JSON file that includes specific settings for sediments and time steps
-cfg = utils.load_config('config.json') #importing load_function from utils - reading file
+cfg = utils.load_config('config.yaml') #importing load_function from utils - reading file
 
 #Getting specific values
 sed = cfg["case_specific"]["sed"] #getting values of sed from case_specific

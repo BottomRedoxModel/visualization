@@ -8,7 +8,7 @@ import my_cmaps as mcm
 import utils
 
 
-cfg = utils.load_config('config.json')
+cfg = utils.load_config('config.yaml')
 
 sed = cfg["case_specific"]["sed"]
 sed2 = cfg["case_specific"]["sed2"]

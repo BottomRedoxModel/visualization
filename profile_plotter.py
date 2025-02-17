@@ -6,7 +6,7 @@ import pandas as pd
 # import config as cfg
 import utils
 
-cfg = utils.load_config('config.json')
+cfg = utils.load_config('config.yaml')
 
 icol = cfg["profile_plotter"]["icol"]
 vert_ax = cfg["profile_plotter"]["vertical_ax"] # Horizontal axis. Only z or dens.

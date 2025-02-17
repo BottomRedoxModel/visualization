@@ -8,7 +8,7 @@ import my_cmaps as mcm
 import utils
 
 #Loading configuration file
-cfg = utils.load_config('config.json')
+cfg = utils.load_config('config.yaml')
 
 #Getting sediment values from the configuration
 sed = cfg["case_specific"]["sed"]
