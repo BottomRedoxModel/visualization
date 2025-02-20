@@ -51,8 +51,8 @@ varnames_ci_diagn = cfg["variable_sets"]["brom_state_ci_diagn"]
 # VERTICAL PROFILES ALL VARIABLES
 #---------------------------------------------------------------
 #  TODO: remove idays from here and make a loop in the module?
-for iday in cfg["profile_plotter"]["idays"]:
-    conc_profiles(ds, iday)
+# for iday in cfg["profile_plotter"]["idays"]:
+#     conc_profiles(ds, iday)
 ####for iday in cfg["profile_plotter"]["idays"]:
 #conc_profiles(ds, 7300)
 #conc_profiles(ds, 7485)
@@ -85,7 +85,7 @@ for iday in cfg["profile_plotter"]["idays"]:
 
 #
 # # 1 year (dataset, picname, varnames, nrows, ncols)
-#one_yr.fig_ztime(ds, 'ztime-brom-waste-1yr', varnames, cfg["plot_1D"]["icol_base"], 8, 6)
+# one_yr.fig_ztime(ds, 'ztime-brom-waste-1yr', varnames, cfg["plot_1D"]["icol_base"], 8, 6)
 #one_yr.fig_ztime(ds, 'ztime-brom-waste-1yr_i', varnames, cfg["plot_1D"]["icol_injection"], 8, 6)
 #one_yr.fig_ztime(ds, 'ztime-brom-waste-1yr_i_sel', biomass_state_sel, cfg["plot_1D"]["icol_injection"], 5, 5)
 
@@ -168,26 +168,27 @@ one_yr.fig_ztime(ds, 'ztime-BROM-1yr_4p', varnames_all[144:192], cfg["plot_1D"][
 #                   (None, None), (None, None), (None, None), (None, None), (None, None)],
 #                  'time_series_swi_ci_flux', #file name
 #                  )
-# depth_timeseries(ds, # define subset from the datafile "ds"
-#  #                cfg["variable_sets"]["depth_timeseries_Ni"], # list of parameters to plot
-#                  cfg["variable_sets"]["depth_timeseries_ci_flux_sum"], # list of parameters to plot
-#                  [cfg["case_specific"]["sed"],
-#                   cfg["case_specific"]["sed"], # depth, k-number
-#                   cfg["case_specific"]["sed"],
-#                   cfg["case_specific"]["sed"],
-#                   cfg["case_specific"]["sed"],
-#                   cfg["case_specific"]["sed"],
-#                   cfg["case_specific"]["sed"],
-#                   cfg["case_specific"]["sed"],
-#                   cfg["case_specific"]["sed"],
-#                   cfg["case_specific"]["sed"]],
-#                  ['b','g','r','y','k','m','c','k','y','g'], #colors
-#                  [True, True, True, True, True,   # negative oriented y-axis
-#                   False, False, False, False, False],
-#                  [(None, None), (None, None), (None, None), (None, None), (None, None),   # ranges of changes of parameters
-#                   (None, None), (None, None), (None, None), (None, None), (None, None)],
-#                  'time_series_swi_ci_flux_sum', #file name
-#                  )
+depth_timeseries(ds, # define subset from the datafile "ds"
+ #                cfg["variable_sets"]["depth_timeseries_Ni"], # list of parameters to plot
+                 cfg["variable_sets"]["depth_timeseries_ci_flux_sum"], # list of parameters to plot
+                 [cfg["case_specific"]["sed"],
+                  cfg["case_specific"]["sed"], # depth, k-number
+                  cfg["case_specific"]["sed"],
+                  cfg["case_specific"]["sed"],
+                  cfg["case_specific"]["sed"],
+                  cfg["case_specific"]["sed"],
+                  cfg["case_specific"]["sed"],
+                  cfg["case_specific"]["sed"],
+                  cfg["case_specific"]["sed"],
+                  cfg["case_specific"]["sed"]],
+                 ['b','g','r','y','k','m','c','k','y','g'], #colors
+                 [True, True, True, True, True,   # negative oriented y-axis
+                  False, False, False, False, False],
+                 [(None, None), (None, None), (None, None), (None, None), (None, None),   # ranges of changes of parameters
+                  (None, None), (None, None), (None, None), (None, None), (None, None)],
+                 'time_series_swi_ci_flux_sum', #file name
+                 integrate=True
+                 )
 
 #---------------------------------------------------------------
 # ANIMATION

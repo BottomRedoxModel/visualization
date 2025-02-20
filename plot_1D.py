@@ -63,7 +63,7 @@ def profiles(ds):
     plt.savefig("vert_dist.png",dpi=300)
 
 
-def depth_timeseries(ds, names, levs, colors, vert_axes, limits, fname, offset=0):
+def depth_timeseries(ds, names, levs, colors, vert_axes, limits, fname, integrate=False, offset=0):
     '''
     Adapted from EYA
     temporal changes at depth levs
@@ -76,12 +76,16 @@ def depth_timeseries(ds, names, levs, colors, vert_axes, limits, fname, offset=0
 
     ds = ds.sel(time=slice(cfg["z-time"]["t1"], cfg["z-time"]["t2"]))
     xs = ds['time'].to_index() - timedelta(days = offset*365)  # doesn't include leap years :(
-    zs = ds['z'].values
 
     fig, axs = plt.subplots(len(names), 1, figsize=(6, len(names)*1.2))
 
     for i, name in enumerate(names):
-        v = ds[name].values[:,levs[i],cfg["plot_1D"]["icol_injection"]]  # mmol/m3
+        if integrate:
+            idxs = [cfg["plot_1D"]["first_idx"],
+                    cfg["plot_1D"]["last_idx"]]
+            v = utils.integrate_column(idxs, name, ds.isel(i=cfg["plot_1D"]["icol_injection"]))
+        else:
+            v = ds[name].values[:,levs[i],cfg["plot_1D"]["icol_injection"]]  # mmol/m3
         #if i == 0:  # ADDED
         axs[i].axhline(y=0, color='black', linestyle='-', linewidth=0.3) # ADDED
         axs[i].plot(xs, v, c=colors[i], lw=2, label=name)

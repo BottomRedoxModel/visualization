@@ -1,5 +1,5 @@
 import os
-import json
+# import json
 from yaml import safe_load
 from tkinter.filedialog import askopenfilename
 
@@ -54,3 +54,26 @@ def load_config(filename):
     with open(filename, "r") as yamlfile:
         config = safe_load(yamlfile)
     return config
+
+def integrate_column(idxs, variable, data):
+
+    import xarray as xr
+
+    if variable.startswith("fick:") or variable.startswith("sink:"):
+        weights = xr.DataArray(
+            data["z2"][idxs[0]:idxs[1]].data
+            - data["z2"][idxs[0] + 1 : idxs[1] + 1].data,
+            dims=("z2",)
+        )
+        var_data = data["fick:Alk"].rolling(z2=2).mean().dropna("z2")
+        weighted_var = var_data.isel(z2=slice(*idxs)).weighted(weights)
+        return weighted_var.sum(dim="z2").values
+    else:
+        print(f"case _: {variable}")
+        weights = xr.DataArray(
+            data["z2"][idxs[0]:idxs[1]].data
+            - data["z2"][idxs[0] + 1 : idxs[1] + 1].data,
+            dims=("z",)
+        )
+        weighted_var = data[variable].isel(z=slice(*idxs)).weighted(weights)
+        return weighted_var.sum(dim="z").values
