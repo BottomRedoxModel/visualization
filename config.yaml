@@ -72,7 +72,8 @@ variable_sets:
     fick:Ci_free, fick:Ci_phy, fick:Ci_het, fick:Ci_POM,
     fick:Ci_DOM, sink:Ci_phy, sink:Ci_het, sink:Ci_POM
   ]
-  depth_timeseries_ci_flux_sum: [fick:Alk, sink:Alk]
+  depth_timeseries_ci_flux_sum: [fick:Ci_dissolved, sink:Ci_partic]
+  depth_timeseries_ci_int: [Ci_free, Ci_tot]
   depth_timeseries_flux: [
     O2, fick:O2, fick:DOML, fick:NH4,
     fick:PO4, fick:H2S, fick:DIC
@@ -89,7 +90,7 @@ plot_1D:
   icol_base: 0
   icol_injection: 0
   first_idx: 0
-  last_idx: 43 # last index + 1 
+  last_idx: 62 # last index + 1
 
 z-time: 
   t1: null

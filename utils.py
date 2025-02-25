@@ -75,5 +75,5 @@ def integrate_column(idxs, variable, data):
             - data["z2"][idxs[0] + 1 : idxs[1] + 1].data,
             dims=("z",)
         )
-        weighted_var = data[variable].isel(z=slice(*idxs)).weighted(weights)
-        return weighted_var.sum(dim="z").values
+        weighted_var = (data[variable].isel(z=slice(*idxs)).weighted(weights))
+        return - weighted_var.sum(dim="z").values
